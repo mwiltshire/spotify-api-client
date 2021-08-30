@@ -1,0 +1,73 @@
+import { useMiddleware } from '../useMiddleware';
+import { Fetcher, RequestConfig } from '../../types';
+
+describe('useMiddleware', () => {
+  test('middleware fns are composed together so request can be passed through chain', async () => {
+    const middleware1 = (next: Fetcher) => (request: RequestConfig) => {
+      return next({
+        ...request,
+        headers: { Authorization: 'Bearer 123456789' }
+      });
+    };
+
+    const middleware2 =
+      // Middleware functions may be aynchronous...
+      (next: Fetcher) => async (request: RequestConfig) => {
+        await Promise.resolve();
+        return next({
+          ...request,
+          params: { test: 123 }
+        });
+      };
+
+    const fetcher = jest.fn((request) =>
+      Promise.resolve({ body: 'SUCCESS', status: 200, headers: {}, request })
+    );
+
+    const middleware = useMiddleware(middleware1, middleware2);
+
+    const withMiddleware = await middleware(fetcher);
+
+    const response = await withMiddleware({
+      url: '/api',
+      method: 'POST',
+      body: 'test',
+      scheme: 'Bearer'
+    });
+
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(response.request).toStrictEqual({
+      url: '/api',
+      method: 'POST',
+      body: 'test',
+      headers: { Authorization: 'Bearer 123456789' },
+      params: { test: 123 },
+      scheme: 'Bearer'
+    });
+  });
+
+  test('empty input applies no middleware', async () => {
+    const fetcher = jest.fn((request) =>
+      Promise.resolve({ body: 'SUCCESS', status: 200, headers: {}, request })
+    );
+
+    const middleware = useMiddleware();
+
+    const withMiddleware = await middleware(fetcher);
+
+    const response = await withMiddleware({
+      url: '/api',
+      method: 'POST',
+      body: 'test',
+      scheme: 'Bearer'
+    });
+
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(response.request).toStrictEqual({
+      url: '/api',
+      method: 'POST',
+      body: 'test',
+      scheme: 'Bearer'
+    });
+  });
+});
