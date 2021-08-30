@@ -7,7 +7,7 @@
     "format": "prettier --write \"src/**/*.{ts,js}\"",
     "lint": "eslint \"src/**/*.{ts,js}\"",
     "test": "jest",
-    "test:watch": "npm test -- --watch",
+    "test:watch": "yarn test -- --watch",
     "prepare": "husky install",
     "pre-commit": "npm-run-all --parallel lint format",
     "pre-push": "npm test"
