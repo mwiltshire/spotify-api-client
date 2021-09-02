@@ -1,40 +1,74 @@
 import { removeEmpty } from '../utils';
-import { RequestConfig } from '../types';
+import { AuthenticationScheme, HttpMethod, RequestConfig } from '../types';
 
-export function createRequestConfig(config: RequestConfig) {
-  const { headers = {}, ...rest } = config;
-  return removeEmpty({
-    headers: { 'Content-Type': 'application/json', ...headers },
-    ...rest
-  }) as RequestConfig;
+function withHeaders(headers: Record<string, any>) {
+  return (config: RequestConfig) => {
+    return {
+      ...config,
+      headers: {
+        ...config.headers,
+        ...headers
+      }
+    };
+  };
 }
 
-export function createBasicPostRequestConfig(
-  config: Omit<RequestConfig, 'scheme' | 'method'>
-) {
-  return createPostRequestConfig({ ...config, scheme: 'Basic' });
+function withMethod(method: HttpMethod) {
+  return (config: Omit<RequestConfig, 'method'>) => {
+    return {
+      ...config,
+      method
+    };
+  };
 }
 
-export function createBearerGetRequestConfig(
-  config: Omit<RequestConfig, 'scheme' | 'method'>
-) {
-  return createGetRequestConfig({ ...config, scheme: 'Bearer' });
+function withScheme(scheme: AuthenticationScheme) {
+  return (config: Omit<RequestConfig, 'scheme'>) => {
+    return {
+      ...config,
+      scheme
+    };
+  };
 }
 
-export function createGetRequestConfig(config: Omit<RequestConfig, 'method'>) {
-  return createRequestConfig({ ...config, method: 'GET' });
-}
+const withApplicationJson = withHeaders({ 'Content-Type': 'application/json' });
 
-export function createPostRequestConfig(config: Omit<RequestConfig, 'method'>) {
-  return createRequestConfig({ ...config, method: 'POST' });
-}
+const withGet = withMethod('GET');
+const withPost = withMethod('POST');
+const withPut = withMethod('PUT');
+const withDelete = withMethod('DELETE');
 
-export function createPutRequestConfig(config: Omit<RequestConfig, 'method'>) {
-  return createRequestConfig({ ...config, method: 'PUT' });
-}
+const withBearerScheme = withScheme('Bearer');
 
-export function createDeleteRequestConfig(
-  config: Omit<RequestConfig, 'method'>
-) {
-  return createRequestConfig({ ...config, method: 'DELETE' });
-}
+const pipeConfig =
+  (...fns: Array<(config: any) => RequestConfig>) =>
+  (r: Omit<RequestConfig, 'method'>) =>
+    fns.reduce((v, f) => f(v), r) as RequestConfig;
+
+export const get = pipeConfig(
+  withGet,
+  withBearerScheme,
+  withApplicationJson,
+  removeEmpty
+);
+
+export const post = pipeConfig(
+  withPost,
+  withBearerScheme,
+  withApplicationJson,
+  removeEmpty
+);
+
+export const put = pipeConfig(
+  withPut,
+  withBearerScheme,
+  withApplicationJson,
+  removeEmpty
+);
+
+export const delete_ = pipeConfig(
+  withDelete,
+  withBearerScheme,
+  withApplicationJson,
+  removeEmpty
+);
