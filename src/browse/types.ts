@@ -27,8 +27,12 @@ export interface GetPlaylistsForCategoryParameters
   category_id: string;
 }
 
+export interface PlaylistsForCategory {
+  playlists: PagingObject<SimplifiedPlaylistObject>;
+}
+
 export type GetPlaylistsForCategoryResponse = Promise<
-  Response<PagingObject<SimplifiedPlaylistObject>>
+  Response<PlaylistsForCategory>
 >;
 
 export interface GetCategoriesParameters
@@ -37,9 +41,11 @@ export interface GetCategoriesParameters
     LimitOption,
     OffsetOption {}
 
-export type GetCategoriesResponse = Promise<
-  Response<PagingObject<CategoryObject>>
->;
+export interface Categories {
+  categories: PagingObject<CategoryObject>;
+}
+
+export type GetCategoriesResponse = Promise<Response<Categories>>;
 
 export interface GetFeaturedPlaylistsParameters
   extends LocaleOption,
@@ -55,9 +61,7 @@ export interface FeaturedPlaylists {
   playlists: PagingObject<SimplifiedPlaylistObject>;
 }
 
-export type GetFeaturedPlaylistsResponse = Promise<
-  Response<PagingObject<FeaturedPlaylists>>
->;
+export type GetFeaturedPlaylistsResponse = Promise<Response<FeaturedPlaylists>>;
 
 export interface GetNewReleasesParameters
   extends CountryOption,
@@ -69,9 +73,7 @@ export interface NewReleases {
   albums: PagingObject<SimplifiedAlbumObject>;
 }
 
-export type GetNewReleasesResponse = Promise<
-  Response<PagingObject<NewReleases>>
->;
+export type GetNewReleasesResponse = Promise<Response<NewReleases>>;
 
 /**
  * See endpoint documentation for in-depth descriptions for
