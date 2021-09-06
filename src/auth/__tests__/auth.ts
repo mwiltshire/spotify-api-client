@@ -6,6 +6,7 @@ import {
   authorizationCodeFlow,
   clientCredentialsFlow
 } from '../auth';
+import { RequestConfig } from '../../types';
 
 describe('createAuthorizationUrl', () => {
   it('returns correctly formatted URL - authorization code flow', () => {
@@ -107,7 +108,12 @@ describe('createAuthorizationCodeFlowUrl', () => {
 describe('refreshAccessToken', () => {
   it('calls client with correct request config', async () => {
     const client = jest.fn(() =>
-      Promise.resolve({ status: 200, headers: {}, body: {} })
+      Promise.resolve({
+        status: 200,
+        headers: {},
+        body: {},
+        request: {} as RequestConfig
+      })
     );
 
     await refreshAccessToken(client, { refresh_token: '3jxd71jfbln38d' });
@@ -127,7 +133,12 @@ describe('refreshAccessToken', () => {
 describe('authorizationCodeFlow', () => {
   it('calls client with correct request config - authorization code flow', async () => {
     const client = jest.fn(() =>
-      Promise.resolve({ status: 200, headers: {}, body: {} })
+      Promise.resolve({
+        status: 200,
+        headers: {},
+        body: {},
+        request: {} as RequestConfig
+      })
     );
 
     await authorizationCodeFlow(client, {
@@ -148,7 +159,12 @@ describe('authorizationCodeFlow', () => {
 
   it('calls client with correct request config - authorization code flow with PKCE', async () => {
     const client = jest.fn(() =>
-      Promise.resolve({ status: 200, headers: {}, body: {} })
+      Promise.resolve({
+        status: 200,
+        headers: {},
+        body: {},
+        request: {} as RequestConfig
+      })
     );
 
     await authorizationCodeFlow(client, {
@@ -171,7 +187,12 @@ describe('authorizationCodeFlow', () => {
 describe('clientCredentialsFlow', () => {
   it('returns handler for endpoint', async () => {
     const client = jest.fn(() =>
-      Promise.resolve({ status: 200, headers: {}, body: {} })
+      Promise.resolve({
+        status: 200,
+        headers: {},
+        body: {},
+        request: {} as RequestConfig
+      })
     );
 
     await clientCredentialsFlow(client);

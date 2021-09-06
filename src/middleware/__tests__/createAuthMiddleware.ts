@@ -1,11 +1,17 @@
 import { createAuthMiddleware } from '../createAuthMiddleware';
+import { RequestConfig } from '../../types';
 
 describe('auth', () => {
   it('calls fetcher with unmodified request config if no scheme field is present', async () => {
     const middleware = createAuthMiddleware({ token: 'bjd873indk' });
 
     const fetcher = jest.fn(() =>
-      Promise.resolve({ body: 'SUCCESS', status: 200, headers: {} })
+      Promise.resolve({
+        body: 'SUCCESS',
+        status: 200,
+        headers: {},
+        request: {} as RequestConfig
+      })
     );
 
     const request = {
@@ -24,7 +30,12 @@ describe('auth', () => {
     const middleware = createAuthMiddleware({ token: 'bjd873indk' });
 
     const fetcher = jest.fn(() =>
-      Promise.resolve({ body: 'SUCCESS', status: 200, headers: {} })
+      Promise.resolve({
+        body: 'SUCCESS',
+        status: 200,
+        headers: {},
+        request: {} as RequestConfig
+      })
     );
 
     const request = {
@@ -49,7 +60,12 @@ describe('auth', () => {
     });
 
     const fetcher = jest.fn(() =>
-      Promise.resolve({ body: 'SUCCESS', status: 200, headers: {} })
+      Promise.resolve({
+        body: 'SUCCESS',
+        status: 200,
+        headers: {},
+        request: {} as RequestConfig
+      })
     );
 
     const request = {
@@ -75,7 +91,12 @@ describe('auth', () => {
     });
 
     const fetcher = jest.fn(() =>
-      Promise.resolve({ body: 'SUCCESS', status: 200, headers: {} })
+      Promise.resolve({
+        body: 'SUCCESS',
+        status: 200,
+        headers: {},
+        request: {} as RequestConfig
+      })
     );
 
     const bufferToString = jest.fn(() => '12345678');
@@ -118,7 +139,12 @@ describe('auth', () => {
     });
 
     const fetcher = jest.fn(() =>
-      Promise.resolve({ body: 'SUCCESS', status: 200, headers: {} })
+      Promise.resolve({
+        body: 'SUCCESS',
+        status: 200,
+        headers: {},
+        request: {} as RequestConfig
+      })
     );
 
     const mockBtoa = jest.fn(() => '12345678');

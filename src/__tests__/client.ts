@@ -5,7 +5,12 @@ import { Fetcher, RequestConfig } from '../types';
 describe('createClient', () => {
   test('fetcher is called with request object passed to client', async () => {
     const fetcher = jest.fn(() =>
-      Promise.resolve({ body: 'SUCCESS', status: 200, headers: {} })
+      Promise.resolve({
+        body: 'SUCCESS',
+        status: 200,
+        headers: {},
+        request: {} as RequestConfig
+      })
     );
 
     const client = createClient(fetcher);
@@ -28,7 +33,12 @@ describe('createClient', () => {
 
   test('fetcher is called with request object passed to client and chained through middleware', async () => {
     const fetcher = jest.fn(() =>
-      Promise.resolve({ body: 'SUCCESS', status: 200, headers: {} })
+      Promise.resolve({
+        body: 'SUCCESS',
+        status: 200,
+        headers: {},
+        request: {} as RequestConfig
+      })
     );
 
     const middleware = (next: Fetcher) => (request: RequestConfig) => {
@@ -64,7 +74,12 @@ describe('createClient', () => {
 
   test('synchronous enhancer function replaces middleware', async () => {
     const fetcher = jest.fn(() =>
-      Promise.resolve({ body: 'SUCCESS', status: 200, headers: {} })
+      Promise.resolve({
+        body: 'SUCCESS',
+        status: 200,
+        headers: {},
+        request: {} as RequestConfig
+      })
     );
 
     const enhancer = (fetcher: Fetcher) => {
@@ -104,7 +119,12 @@ describe('createClient', () => {
 
   test('async enhancer function replaces middleware', async () => {
     const fetcher = jest.fn(() =>
-      Promise.resolve({ body: 'SUCCESS', status: 200, headers: {} })
+      Promise.resolve({
+        body: 'SUCCESS',
+        status: 200,
+        headers: {},
+        request: {} as RequestConfig
+      })
     );
 
     const getTestToken = async () => {
