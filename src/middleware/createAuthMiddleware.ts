@@ -19,6 +19,12 @@ export function createAuthMiddleware({
       return next(request);
     }
 
+    // Bail if the Authorization field is already present in the
+    // headers for any reason.
+    if (request.headers?.['Authorization'] || request.headers?.authorization) {
+      return next(request);
+    }
+
     let authorization: string;
 
     if (request.scheme === 'Bearer') {

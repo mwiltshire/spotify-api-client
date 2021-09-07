@@ -26,6 +26,60 @@ describe('auth', () => {
     expect(fetcher).toHaveBeenCalledWith(request);
   });
 
+  it('calls fetcher with unmodified request config if auth header already present - lowercase', async () => {
+    const middleware = createAuthMiddleware({ token: 'bjd873indk' });
+
+    const fetcher = jest.fn(() =>
+      Promise.resolve({
+        body: 'SUCCESS',
+        status: 200,
+        headers: {},
+        request: {} as RequestConfig
+      })
+    );
+
+    const request = {
+      url: '/api',
+      method: 'POST',
+      body: 'test',
+      headers: {
+        authorization: 'Bearer 1234'
+      }
+    } as const;
+
+    await middleware(fetcher)(request);
+
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(fetcher).toHaveBeenCalledWith(request);
+  });
+
+  it('calls fetcher with unmodified request config if auth header already present - uppercase', async () => {
+    const middleware = createAuthMiddleware({ token: 'bjd873indk' });
+
+    const fetcher = jest.fn(() =>
+      Promise.resolve({
+        body: 'SUCCESS',
+        status: 200,
+        headers: {},
+        request: {} as RequestConfig
+      })
+    );
+
+    const request = {
+      url: '/api',
+      method: 'POST',
+      body: 'test',
+      headers: {
+        Authorization: 'Bearer 1234'
+      }
+    } as const;
+
+    await middleware(fetcher)(request);
+
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(fetcher).toHaveBeenCalledWith(request);
+  });
+
   it('adds the correct Bearer authorization header', async () => {
     const middleware = createAuthMiddleware({ token: 'bjd873indk' });
 
