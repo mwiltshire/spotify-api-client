@@ -6,8 +6,8 @@ function withHeaders(headers: Record<string, any>) {
     return {
       ...config,
       headers: {
-        ...config.headers,
-        ...headers
+        ...headers,
+        ...config.headers
       }
     };
   };
