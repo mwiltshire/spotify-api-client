@@ -1,4 +1,5 @@
-import { Middleware, Fetcher } from '../types';
+import { Middleware } from './types';
+import { Fetcher } from '../types';
 
 export function useMiddleware(...fns: Middleware[]) {
   return (next: Fetcher) =>

@@ -3,7 +3,11 @@ import { RequestConfig } from '../../types';
 
 describe('auth', () => {
   it('calls fetcher with unmodified request config if no scheme field is present', async () => {
-    const middleware = createAuthMiddleware({ token: 'bjd873indk' });
+    const middleware = createAuthMiddleware({
+      token: 'bjd873indk',
+      client_id: 'CLIENT_ID',
+      client_secret: 'CLIENT_SECRET'
+    });
 
     const fetcher = jest.fn(() =>
       Promise.resolve({
@@ -27,7 +31,11 @@ describe('auth', () => {
   });
 
   it('calls fetcher with unmodified request config if auth header already present - lowercase', async () => {
-    const middleware = createAuthMiddleware({ token: 'bjd873indk' });
+    const middleware = createAuthMiddleware({
+      token: 'bjd873indk',
+      client_id: 'CLIENT_ID',
+      client_secret: 'CLIENT_SECRET'
+    });
 
     const fetcher = jest.fn(() =>
       Promise.resolve({
@@ -54,7 +62,11 @@ describe('auth', () => {
   });
 
   it('calls fetcher with unmodified request config if auth header already present - uppercase', async () => {
-    const middleware = createAuthMiddleware({ token: 'bjd873indk' });
+    const middleware = createAuthMiddleware({
+      token: 'bjd873indk',
+      client_id: 'CLIENT_ID',
+      client_secret: 'CLIENT_SECRET'
+    });
 
     const fetcher = jest.fn(() =>
       Promise.resolve({
@@ -81,7 +93,11 @@ describe('auth', () => {
   });
 
   it('adds the correct Bearer authorization header', async () => {
-    const middleware = createAuthMiddleware({ token: 'bjd873indk' });
+    const middleware = createAuthMiddleware({
+      token: 'bjd873indk',
+      client_id: 'CLIENT_ID',
+      client_secret: 'CLIENT_SECRET'
+    });
 
     const fetcher = jest.fn(() =>
       Promise.resolve({
@@ -110,7 +126,9 @@ describe('auth', () => {
 
   it('adds the correct Bearer authorization header asynchronously', async () => {
     const middleware = createAuthMiddleware({
-      token: () => Promise.resolve('bjd873indk')
+      token: () => Promise.resolve('bjd873indk'),
+      client_id: 'CLIENT_ID',
+      client_secret: 'CLIENT_SECRET'
     });
 
     const fetcher = jest.fn(() =>
@@ -140,8 +158,9 @@ describe('auth', () => {
 
   it('uses client ID and secret to apply Basic authorization header in Node env', async () => {
     const middleware = createAuthMiddleware({
-      clientId: '1234',
-      clientSecret: '5678'
+      token: 'bjd873indk',
+      client_id: 'CLIENT_ID',
+      client_secret: 'CLIENT_SECRET'
     });
 
     const fetcher = jest.fn(() =>
@@ -172,7 +191,7 @@ describe('auth', () => {
     await middleware(fetcher)(request);
 
     expect(bufferFrom).toHaveBeenCalledTimes(1);
-    expect(bufferFrom).toHaveBeenCalledWith('1234:5678');
+    expect(bufferFrom).toHaveBeenCalledWith('CLIENT_ID:CLIENT_SECRET');
 
     expect(bufferToString).toHaveBeenCalledTimes(1);
     expect(bufferToString).toHaveBeenCalledWith('base64');
@@ -188,8 +207,9 @@ describe('auth', () => {
 
   it('uses client ID and secret to apply Basic authorization header in browser env', async () => {
     const middleware = createAuthMiddleware({
-      clientId: '1234',
-      clientSecret: '5678'
+      token: 'bjd873indk',
+      client_id: 'CLIENT_ID',
+      client_secret: 'CLIENT_SECRET'
     });
 
     const fetcher = jest.fn(() =>
@@ -218,7 +238,7 @@ describe('auth', () => {
     await middleware(fetcher)(request);
 
     expect(mockBtoa).toHaveBeenCalledTimes(1);
-    expect(mockBtoa).toHaveBeenCalledWith('1234:5678');
+    expect(mockBtoa).toHaveBeenCalledWith('CLIENT_ID:CLIENT_SECRET');
 
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher).toHaveBeenCalledWith({

@@ -1,5 +1,5 @@
 import { createClient } from '../client';
-import { useMiddleware } from '../middleware/useMiddleware';
+import { useMiddleware } from '../middleware';
 import { Fetcher, RequestConfig } from '../types';
 
 describe('createClient', () => {
