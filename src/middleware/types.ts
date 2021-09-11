@@ -1,10 +1,8 @@
 import { Fetcher, RequestConfig, MaybePromise } from '../types';
 
-export type FetcherEnhancer = (fetcher: Fetcher) => MaybePromise<Fetcher>;
-
 export type Middleware = (
   next: Fetcher
-) => (request: RequestConfig) => ReturnType<Fetcher>;
+) => MaybePromise<(request: RequestConfig) => ReturnType<Fetcher>>;
 
 export interface BasicAuthMiddlewareConfig {
   client_id: string;

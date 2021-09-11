@@ -1,7 +1,7 @@
 import { Fetcher, RequestConfig } from './types';
-import { FetcherEnhancer } from './middleware';
+import { Middleware } from './middleware';
 
-export function createClient(fetcher: Fetcher, middleware?: FetcherEnhancer) {
+export function createClient(fetcher: Fetcher, middleware?: Middleware) {
   return async (request: RequestConfig) => {
     if (middleware) {
       const withMiddleware = await middleware(fetcher);
