@@ -24,7 +24,8 @@ describe('auth', () => {
       body: 'test'
     } as const;
 
-    await middleware(fetcher)(request);
+    const withMiddleware = await middleware(fetcher);
+    withMiddleware(request);
 
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher).toHaveBeenCalledWith(request);
@@ -55,7 +56,8 @@ describe('auth', () => {
       }
     } as const;
 
-    await middleware(fetcher)(request);
+    const withMiddleware = await middleware(fetcher);
+    withMiddleware(request);
 
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher).toHaveBeenCalledWith(request);
@@ -86,7 +88,8 @@ describe('auth', () => {
       }
     } as const;
 
-    await middleware(fetcher)(request);
+    const withMiddleware = await middleware(fetcher);
+    withMiddleware(request);
 
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher).toHaveBeenCalledWith(request);
@@ -115,7 +118,8 @@ describe('auth', () => {
       scheme: 'Bearer'
     } as const;
 
-    await middleware(fetcher)(request);
+    const withMiddleware = await middleware(fetcher);
+    withMiddleware(request);
 
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher).toHaveBeenCalledWith({
@@ -147,7 +151,8 @@ describe('auth', () => {
       scheme: 'Bearer'
     } as const;
 
-    await middleware(fetcher)(request);
+    const withMiddleware = await middleware(fetcher);
+    withMiddleware(request);
 
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher).toHaveBeenCalledWith({
@@ -188,7 +193,8 @@ describe('auth', () => {
       scheme: 'Basic'
     } as const;
 
-    await middleware(fetcher)(request);
+    const withMiddleware = await middleware(fetcher);
+    withMiddleware(request);
 
     expect(bufferFrom).toHaveBeenCalledTimes(1);
     expect(bufferFrom).toHaveBeenCalledWith('CLIENT_ID:CLIENT_SECRET');
@@ -235,7 +241,8 @@ describe('auth', () => {
       scheme: 'Basic'
     } as const;
 
-    await middleware(fetcher)(request);
+    const withMiddleware = await middleware(fetcher);
+    withMiddleware(request);
 
     expect(mockBtoa).toHaveBeenCalledTimes(1);
     expect(mockBtoa).toHaveBeenCalledWith('CLIENT_ID:CLIENT_SECRET');
