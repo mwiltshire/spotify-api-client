@@ -1,40 +1,56 @@
-import { RequestConfig, Response as SpotifyResponse } from '../types';
-import { stringifyEntries } from '../utils';
+import { AuthenticationError, RegularError } from '../error';
+import {
+  AuthenticationErrorResponse,
+  RegularErrorResponse,
+  RequestConfig,
+  Response as SpotifyResponse
+} from '../types';
+import { isPlainObject, stringifyEntries } from '../utils';
 
 function prepareSearchParams(params: Record<string, any>) {
   return stringifyEntries(Object.entries(params));
 }
 
-function getError(body: any, response: Response) {
-  const isApiError = typeof body?.error === 'object';
-  const isAuthenticationError = typeof body?.error === 'string';
+function isRegularApiError(
+  body: Record<string, any>
+): body is RegularErrorResponse {
+  return isPlainObject(body.error);
+}
 
-  let reason: string | undefined;
-  let message: string;
+function isAuthenticationError(
+  body: Record<string, any>
+): body is AuthenticationErrorResponse {
+  return typeof body.error === 'string';
+}
 
-  if (isApiError) {
-    reason = body.error?.reason;
-    message = body.error?.message;
-  } else if (isAuthenticationError) {
-    message = body?.error;
-  } else {
-    // Some other unhandled/unkown error most likely not
-    // originating from Spotify.
-    message = '[spotify api client] unknown error';
+function getError(body: Record<string, any>, response: Response) {
+  const { status } = response;
+
+  if (isRegularApiError(body)) {
+    return new RegularError({
+      message: body.error.message,
+      reason: body.error.reason,
+      status,
+      response
+    });
+  } else if (isAuthenticationError(body)) {
+    return new AuthenticationError({
+      message: body.error,
+      error_description: body.error_description,
+      status,
+      response
+    });
   }
 
-  return {
-    message,
-    reason,
-    status: response.status,
-    response
-  };
+  // Some other unhandled/unkown error most likely not
+  // originating from Spotify.
+  return new Error('[spotify api client] unknown error');
 }
 
 export async function fetcher(
   request: RequestConfig
 ): Promise<SpotifyResponse> {
-  const { url, method, headers, params, body, signal } = request;
+  const { url, method, headers, params, body, signal = null } = request;
   let requestUrl = url;
   const init: RequestInit = { method, signal };
 
