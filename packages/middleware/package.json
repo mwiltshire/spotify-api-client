@@ -1,0 +1,6 @@
+{
+  "name": "spotify-api-client/middleware",
+  "private": true,
+  "main": "../dist/cjs/middleware/index.js",
+  "module": "../dist/esm/middleware/index.js"
+}

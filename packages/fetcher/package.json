@@ -1,0 +1,6 @@
+{
+  "name": "spotify-api-client/fetcher",
+  "private": true,
+  "main": "../dist/cjs/fetcher/index.js",
+  "module": "../dist/esm/fetcher/index.js"
+}

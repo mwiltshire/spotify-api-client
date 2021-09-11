@@ -1,0 +1,6 @@
+{
+  "name": "spotify-api-client/browse",
+  "private": true,
+  "main": "../dist/cjs/browse/index.js",
+  "module": "../dist/esm/browse/index.js"
+}

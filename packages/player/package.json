@@ -1,0 +1,6 @@
+{
+  "name": "spotify-api-client/player",
+  "private": true,
+  "main": "../dist/cjs/player/index.js",
+  "module": "../dist/esm/player/index.js"
+}

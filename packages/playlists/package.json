@@ -1,0 +1,6 @@
+{
+  "name": "spotify-api-client/playlists",
+  "private": true,
+  "main": "../dist/cjs/playlists/index.js",
+  "module": "../dist/esm/playlists/index.js"
+}

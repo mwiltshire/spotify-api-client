@@ -1,0 +1,6 @@
+{
+  "name": "spotify-api-client/shows",
+  "private": true,
+  "main": "../dist/cjs/shows/index.js",
+  "module": "../dist/esm/shows/index.js"
+}

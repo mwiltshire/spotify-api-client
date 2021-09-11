@@ -1,0 +1,6 @@
+{
+  "name": "spotify-api-client/episodes",
+  "private": true,
+  "main": "../dist/cjs/episodes/index.js",
+  "module": "../dist/esm/episodes/index.js"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "spotify-api-client/follow",
+  "private": true,
+  "main": "../dist/cjs/follow/index.js",
+  "module": "../dist/esm/follow/index.js"
+}

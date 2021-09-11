@@ -1,0 +1,6 @@
+{
+  "name": "spotify-api-client/search",
+  "private": true,
+  "main": "../dist/cjs/search/index.js",
+  "module": "../dist/esm/search/index.js"
+}

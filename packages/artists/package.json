@@ -1,0 +1,6 @@
+{
+  "name": "spotify-api-client/artists",
+  "private": true,
+  "main": "../dist/cjs/artists/index.js",
+  "module": "../dist/esm/artists/index.js"
+}
