@@ -9,6 +9,7 @@ export interface RequestConfig {
   params?: Record<string, any>;
   body?: any;
   scheme?: AuthenticationScheme;
+  signal?: AbortSignal;
 }
 
 export interface Response<T = any> {
