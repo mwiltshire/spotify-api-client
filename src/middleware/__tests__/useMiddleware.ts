@@ -1,7 +1,7 @@
-import { useMiddleware } from '../useMiddleware';
+import { composeMiddleware } from '../composeMiddleware';
 import { Fetcher, RequestConfig } from '../../types';
 
-describe('useMiddleware', () => {
+describe('composeMiddleware', () => {
   test('middleware fns are composed together so request can be passed through chain', async () => {
     const middleware1 = (next: Fetcher) => (request: RequestConfig) => {
       return next({
@@ -24,7 +24,7 @@ describe('useMiddleware', () => {
       Promise.resolve({ body: 'SUCCESS', status: 200, headers: {}, request })
     );
 
-    const middleware = useMiddleware(middleware1, middleware2);
+    const middleware = composeMiddleware(middleware1, middleware2);
 
     const withMiddleware = await middleware(fetcher);
 
@@ -51,7 +51,7 @@ describe('useMiddleware', () => {
       Promise.resolve({ body: 'SUCCESS', status: 200, headers: {}, request })
     );
 
-    const middleware = useMiddleware();
+    const middleware = composeMiddleware();
 
     const withMiddleware = await middleware(fetcher);
 
@@ -93,7 +93,7 @@ describe('useMiddleware', () => {
       Promise.resolve({ body: 'SUCCESS', status: 200, headers: {}, request })
     );
 
-    const middleware = useMiddleware(middleware1, middleware2);
+    const middleware = composeMiddleware(middleware1, middleware2);
 
     const withMiddleware = await middleware(fetcher);
 

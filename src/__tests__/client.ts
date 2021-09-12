@@ -1,5 +1,5 @@
 import { createClient } from '../client';
-import { useMiddleware } from '../middleware';
+import { composeMiddleware } from '../middleware';
 import { Fetcher, RequestConfig } from '../types';
 
 describe('createClient', () => {
@@ -51,7 +51,7 @@ describe('createClient', () => {
       });
     };
 
-    const client = createClient(fetcher, useMiddleware(middleware));
+    const client = createClient(fetcher, composeMiddleware(middleware));
 
     await client({
       url: '/api',
