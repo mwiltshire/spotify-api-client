@@ -25,7 +25,7 @@ describe('auth', () => {
     } as const;
 
     const withMiddleware = await middleware(fetcher);
-    withMiddleware(request);
+    await withMiddleware(request);
 
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher).toHaveBeenCalledWith(request);
@@ -57,7 +57,7 @@ describe('auth', () => {
     } as const;
 
     const withMiddleware = await middleware(fetcher);
-    withMiddleware(request);
+    await withMiddleware(request);
 
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher).toHaveBeenCalledWith(request);
@@ -89,13 +89,13 @@ describe('auth', () => {
     } as const;
 
     const withMiddleware = await middleware(fetcher);
-    withMiddleware(request);
+    await withMiddleware(request);
 
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher).toHaveBeenCalledWith(request);
   });
 
-  it('adds the correct Bearer authorization header', async () => {
+  it('adds the correct Bearer authorization header - token field as string', async () => {
     const middleware = createAuthMiddleware({
       token: 'bjd873indk',
       client_id: 'CLIENT_ID',
@@ -119,7 +119,7 @@ describe('auth', () => {
     } as const;
 
     const withMiddleware = await middleware(fetcher);
-    withMiddleware(request);
+    await withMiddleware(request);
 
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher).toHaveBeenCalledWith({
@@ -128,7 +128,40 @@ describe('auth', () => {
     });
   });
 
-  it('adds the correct Bearer authorization header asynchronously', async () => {
+  it('adds the correct Bearer authorization header - token field as function', async () => {
+    const middleware = createAuthMiddleware({
+      token: () => 'bjd873indk',
+      client_id: 'CLIENT_ID',
+      client_secret: 'CLIENT_SECRET'
+    });
+
+    const fetcher = jest.fn(() =>
+      Promise.resolve({
+        body: 'SUCCESS',
+        status: 200,
+        headers: {},
+        request: {} as RequestConfig
+      })
+    );
+
+    const request = {
+      url: '/api',
+      method: 'POST',
+      body: 'test',
+      scheme: 'Bearer'
+    } as const;
+
+    const withMiddleware = await middleware(fetcher);
+    await withMiddleware(request);
+
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(fetcher).toHaveBeenCalledWith({
+      ...request,
+      headers: { Authorization: 'Bearer bjd873indk' }
+    });
+  });
+
+  it('adds the correct Bearer authorization header - token field as async function', async () => {
     const middleware = createAuthMiddleware({
       token: () => Promise.resolve('bjd873indk'),
       client_id: 'CLIENT_ID',
@@ -152,7 +185,7 @@ describe('auth', () => {
     } as const;
 
     const withMiddleware = await middleware(fetcher);
-    withMiddleware(request);
+    await withMiddleware(request);
 
     expect(fetcher).toHaveBeenCalledTimes(1);
     expect(fetcher).toHaveBeenCalledWith({
@@ -194,7 +227,7 @@ describe('auth', () => {
     } as const;
 
     const withMiddleware = await middleware(fetcher);
-    withMiddleware(request);
+    await withMiddleware(request);
 
     expect(bufferFrom).toHaveBeenCalledTimes(1);
     expect(bufferFrom).toHaveBeenCalledWith('CLIENT_ID:CLIENT_SECRET');
@@ -242,7 +275,7 @@ describe('auth', () => {
     } as const;
 
     const withMiddleware = await middleware(fetcher);
-    withMiddleware(request);
+    await withMiddleware(request);
 
     expect(mockBtoa).toHaveBeenCalledTimes(1);
     expect(mockBtoa).toHaveBeenCalledWith('CLIENT_ID:CLIENT_SECRET');
