@@ -16,7 +16,7 @@ export interface GetAlbumParameters extends MarketOption {
 
 export type GetAlbumResponse = Promise<Response<AlbumObject>>;
 
-export interface GetAlbumTracksParameters
+export interface GetTracksForAlbumParameters
   extends LimitOption,
     OffsetOption,
     MarketOption {
@@ -24,7 +24,7 @@ export interface GetAlbumTracksParameters
   id: string;
 }
 
-export type GetAlbumTracksResponse = Promise<
+export type GetTracksForAlbumResponse = Promise<
   Response<PagingObject<SimplifiedTrackObject>>
 >;
 

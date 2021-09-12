@@ -3,10 +3,10 @@ import { formatPathParams } from '../utils';
 import { get } from '../http/request';
 import {
   GetAlbumParameters,
-  GetAlbumTracksParameters,
+  GetTracksForAlbumParameters,
   GetAlbumsParameters,
   GetAlbumResponse,
-  GetAlbumTracksResponse,
+  GetTracksForAlbumResponse,
   GetAlbumsResponse
 } from './types';
 import { Fetcher } from '../types';
@@ -20,10 +20,10 @@ export function getAlbum(
   return client(get({ url, params: rest }));
 }
 
-export function getAlbumTracks(
+export function getTracksForAlbum(
   client: Fetcher,
-  parameters: GetAlbumTracksParameters
-): GetAlbumTracksResponse {
+  parameters: GetTracksForAlbumParameters
+): GetTracksForAlbumResponse {
   const { id, ...rest } = parameters;
   const url = formatPathParams({
     url: ENDPOINTS.ALBUM_TRACKS,

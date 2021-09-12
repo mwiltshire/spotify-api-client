@@ -1,4 +1,4 @@
-import { getAlbum, getAlbums, getAlbumTracks } from '../albums';
+import { getAlbum, getAlbums, getTracksForAlbum } from '../albums';
 import { RequestConfig } from '../../types';
 
 describe('getAlbum', () => {
@@ -31,7 +31,7 @@ describe('getAlbum', () => {
   });
 });
 
-describe('getAlbumTracks', () => {
+describe('getTracksForAlbum', () => {
   it('calls client with correct request config', async () => {
     const client = jest.fn(() =>
       Promise.resolve({
@@ -42,7 +42,7 @@ describe('getAlbumTracks', () => {
       })
     );
 
-    await getAlbumTracks(client, {
+    await getTracksForAlbum(client, {
       id: '0sNOF9WDwhWunNAHPD3Baj',
       market: 'US',
       limit: 10
