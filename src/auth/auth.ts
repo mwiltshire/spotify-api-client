@@ -1,44 +1,37 @@
 import * as ENDPOINTS from './endpoints';
-import { Fetcher, RequestConfig } from '../types';
 import {
-  AuthorizationCodeFlowResponse,
-  AuthorizationCodeFlowParameters,
-  AuthorizationCodeFlowUrlParameters,
-  ClientCredentialsFlowResponse,
+  AuthorizationCodeResponse,
+  AuthorizationCodeParameters,
+  AuthorizationCodeUrlParameters,
+  ClientCredentialsResponse,
   CreateAuthorizationUrlParameters,
-  ImplicitGrantFlowUrlParameters,
+  ImplicitGrantUrlParameters,
   RefreshAccessTokenParameters,
-  RefreshAccessTokenResponse
+  RefreshAccessTokenResponse,
+  AuthorizationCodeWithPkceParameters,
+  AuthorizationCodeWithPkceUrlParameters
 } from './types';
+import { Fetcher, RequestConfig } from '../types';
+import { stringifyEntries, removeUndefinedEntries } from '../utils';
 
-export function createAuthorizationUrl({
-  scope,
-  show_dialog,
-  ...rest
-}: CreateAuthorizationUrlParameters): string {
-  const query: Record<string, any> = {
-    scope: scope ? scope.join(' ') : scope,
-    ...rest
-  };
-
-  if (typeof show_dialog !== 'undefined') {
-    query.show_dialog = show_dialog.toString();
-  }
-
-  // This is PKCE flow, so add the required S256 code
-  // challenge method field.
-  if (rest.response_type === 'code' && rest.code_challenge) {
-    query.code_challenge_method = 'S256';
-  }
-
-  const base = ENDPOINTS.ACCOUNTS_AUTHORIZE;
-  const params = new URLSearchParams(query).toString();
-
-  return `${base}?${params}`;
+function prepareSearchParams(params: Record<string, any>) {
+  return stringifyEntries(
+    removeUndefinedEntries(Object.entries(params)),
+    (arr) => arr.join(' ')
+  );
 }
 
-export function createImplicitGrantFlowUrl(
-  parameters: Omit<ImplicitGrantFlowUrlParameters, 'response_type'>
+function createAuthorizationUrl(
+  parameters: CreateAuthorizationUrlParameters
+): string {
+  const preparedParams = prepareSearchParams(parameters);
+  const base = ENDPOINTS.ACCOUNTS_AUTHORIZE;
+  const searchParams = new URLSearchParams(preparedParams).toString();
+  return `${base}?${searchParams}`;
+}
+
+export function createImplicitGrantUrl(
+  parameters: Omit<ImplicitGrantUrlParameters, 'response_type'>
 ) {
   return createAuthorizationUrl({
     ...parameters,
@@ -46,16 +39,25 @@ export function createImplicitGrantFlowUrl(
   });
 }
 
-export function createAuthorizationCodeFlowUrl(
-  parameters: Omit<AuthorizationCodeFlowUrlParameters, 'response_type'>
+export function createAuthorizationCodeUrl(
+  parameters: Omit<AuthorizationCodeUrlParameters, 'response_type'>
 ) {
-  const { code_challenge } = parameters;
   return createAuthorizationUrl({
     ...parameters,
-    ...(code_challenge && {
-      code_challenge
-    }),
     response_type: 'code'
+  });
+}
+
+export function createAuthorizationCodeWithPkceUrl(
+  parameters: Omit<
+    AuthorizationCodeWithPkceUrlParameters,
+    'response_type' | 'code_challenge_method'
+  >
+) {
+  return createAuthorizationUrl({
+    ...parameters,
+    response_type: 'code',
+    code_challenge_method: 'S256'
   });
 }
 
@@ -77,10 +79,30 @@ export function refreshAccessToken(
   });
 }
 
-export function authorizationCodeFlow(
+export function authorizationCode(
   client: Fetcher,
-  parameters: AuthorizationCodeFlowParameters
-): AuthorizationCodeFlowResponse {
+  parameters: AuthorizationCodeParameters
+): AuthorizationCodeResponse {
+  const request: RequestConfig = {
+    url: ENDPOINTS.ACCOUNTS_TOKEN,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({
+      grant_type: 'authorization_code',
+      ...parameters
+    }).toString(),
+    scheme: 'Basic'
+  };
+
+  return client(request);
+}
+
+export function authorizationCodeWithPkce(
+  client: Fetcher,
+  parameters: AuthorizationCodeWithPkceParameters
+): AuthorizationCodeResponse {
   const request: RequestConfig = {
     url: ENDPOINTS.ACCOUNTS_TOKEN,
     method: 'POST',
@@ -93,20 +115,10 @@ export function authorizationCodeFlow(
     }).toString()
   };
 
-  // If a code verifier wasn't provided then this is
-  // a standard authorization code flow request and
-  // Basic scheme should be used, otherwise no scheme
-  // is applied.
-  if (typeof parameters.code_verifier === 'undefined') {
-    request.scheme = 'Basic';
-  }
-
   return client(request);
 }
 
-export function clientCredentialsFlow(
-  client: Fetcher
-): ClientCredentialsFlowResponse {
+export function clientCredentials(client: Fetcher): ClientCredentialsResponse {
   return client({
     url: ENDPOINTS.ACCOUNTS_TOKEN,
     method: 'POST',

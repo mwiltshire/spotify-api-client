@@ -1,72 +1,17 @@
 import {
-  createAuthorizationUrl,
-  createImplicitGrantFlowUrl,
-  createAuthorizationCodeFlowUrl,
+  createImplicitGrantUrl,
+  createAuthorizationCodeUrl,
+  createAuthorizationCodeWithPkceUrl,
   refreshAccessToken,
-  authorizationCodeFlow,
-  clientCredentialsFlow
+  authorizationCode,
+  authorizationCodeWithPkce,
+  clientCredentials
 } from '../auth';
 import { RequestConfig } from '../../types';
 
-describe('createAuthorizationUrl', () => {
-  it('returns correctly formatted URL - authorization code flow', () => {
-    const url = createAuthorizationUrl({
-      scope: ['user-follow-modify', 'user-read-currently-playing'],
-      client_id: 'h37djjslxo3lm',
-      redirect_uri: 'https://test.com/callback',
-      state: '1234',
-      response_type: 'code'
-    });
-    expect(url).toBe(
-      'https://accounts.spotify.com/authorize?scope=user-follow-modify+user-read-currently-playing&client_id=h37djjslxo3lm&redirect_uri=https%3A%2F%2Ftest.com%2Fcallback&state=1234&response_type=code'
-    );
-  });
-
-  it('returns correctly formatted URL - authorization code flow with PKCE', () => {
-    const url = createAuthorizationUrl({
-      scope: ['user-follow-modify', 'user-read-currently-playing'],
-      client_id: 'h37djjslxo3lm',
-      redirect_uri: 'https://test.com/callback',
-      state: '1234',
-      response_type: 'code',
-      code_challenge: 'kd83kn29dkk3kkjc93'
-    });
-    expect(url).toBe(
-      'https://accounts.spotify.com/authorize?scope=user-follow-modify+user-read-currently-playing&client_id=h37djjslxo3lm&redirect_uri=https%3A%2F%2Ftest.com%2Fcallback&state=1234&response_type=code&code_challenge=kd83kn29dkk3kkjc93&code_challenge_method=S256'
-    );
-  });
-
-  it('returns correctly formatted URL - implicit grant flow', () => {
-    const url = createAuthorizationUrl({
-      scope: ['user-follow-modify', 'user-read-currently-playing'],
-      client_id: 'h37djjslxo3lm',
-      redirect_uri: 'https://test.com/callback',
-      state: '1234',
-      response_type: 'token'
-    });
-    expect(url).toBe(
-      'https://accounts.spotify.com/authorize?scope=user-follow-modify+user-read-currently-playing&client_id=h37djjslxo3lm&redirect_uri=https%3A%2F%2Ftest.com%2Fcallback&state=1234&response_type=token'
-    );
-  });
-
-  it('returns correctly formatted URL with optional show_dialog parameter', () => {
-    const url = createAuthorizationUrl({
-      scope: ['user-follow-modify', 'user-read-currently-playing'],
-      client_id: 'h37djjslxo3lm',
-      redirect_uri: 'https://test.com/callback',
-      response_type: 'token',
-      state: '1234',
-      show_dialog: true
-    });
-    expect(url).toBe(
-      'https://accounts.spotify.com/authorize?scope=user-follow-modify+user-read-currently-playing&client_id=h37djjslxo3lm&redirect_uri=https%3A%2F%2Ftest.com%2Fcallback&response_type=token&state=1234&show_dialog=true'
-    );
-  });
-});
-
-describe('createImplicitGrantFlowUrl', () => {
+describe('createImplicitGrantUrl', () => {
   it('returns correctly formatted URL', () => {
-    const url = createImplicitGrantFlowUrl({
+    const url = createImplicitGrantUrl({
       scope: ['user-follow-modify', 'user-read-currently-playing'],
       client_id: 'h37djjslxo3lm',
       redirect_uri: 'https://test.com/callback',
@@ -78,9 +23,9 @@ describe('createImplicitGrantFlowUrl', () => {
   });
 });
 
-describe('createAuthorizationCodeFlowUrl', () => {
-  it('returns correctly formatted URL - authorization code flow', () => {
-    const url = createAuthorizationCodeFlowUrl({
+describe('createAuthorizationCodeUrl', () => {
+  it('returns correctly formatted URL', () => {
+    const url = createAuthorizationCodeUrl({
       scope: ['user-follow-modify', 'user-read-currently-playing'],
       client_id: 'h37djjslxo3lm',
       redirect_uri: 'https://test.com/callback',
@@ -91,8 +36,21 @@ describe('createAuthorizationCodeFlowUrl', () => {
     );
   });
 
-  it('returns correctly formatted URL - authorization code flow with PKCE', () => {
-    const url = createAuthorizationCodeFlowUrl({
+  it('returns correctly formatted URL with optional scope parameter', () => {
+    const url = createAuthorizationCodeUrl({
+      client_id: 'h37djjslxo3lm',
+      redirect_uri: 'https://test.com/callback',
+      state: '1234'
+    });
+    expect(url).toBe(
+      'https://accounts.spotify.com/authorize?client_id=h37djjslxo3lm&redirect_uri=https%3A%2F%2Ftest.com%2Fcallback&state=1234&response_type=code'
+    );
+  });
+});
+
+describe('createAuthorizationCodeWithPkceUrl', () => {
+  it('returns correctly formatted URL', () => {
+    const url = createAuthorizationCodeWithPkceUrl({
       scope: ['user-follow-modify', 'user-read-currently-playing'],
       client_id: 'h37djjslxo3lm',
       redirect_uri: 'https://test.com/callback',
@@ -130,8 +88,8 @@ describe('refreshAccessToken', () => {
   });
 });
 
-describe('authorizationCodeFlow', () => {
-  it('calls client with correct request config - authorization code flow', async () => {
+describe('authorizationCode', () => {
+  it('calls client with correct request config - authorization code ', async () => {
     const client = jest.fn(() =>
       Promise.resolve({
         status: 200,
@@ -141,7 +99,7 @@ describe('authorizationCodeFlow', () => {
       })
     );
 
-    await authorizationCodeFlow(client, {
+    await authorizationCode(client, {
       code: '1234',
       redirect_uri: 'https://test.com/callback'
     });
@@ -156,8 +114,10 @@ describe('authorizationCodeFlow', () => {
       scheme: 'Basic'
     });
   });
+});
 
-  it('calls client with correct request config - authorization code flow with PKCE', async () => {
+describe('authorizationCodeWithPkce', () => {
+  it('calls client with correct request config', async () => {
     const client = jest.fn(() =>
       Promise.resolve({
         status: 200,
@@ -167,7 +127,8 @@ describe('authorizationCodeFlow', () => {
       })
     );
 
-    await authorizationCodeFlow(client, {
+    await authorizationCodeWithPkce(client, {
+      client_id: '1234',
       code: '1234',
       code_verifier: 'jd83ifkhd29i',
       redirect_uri: 'https://test.com/callback'
@@ -179,12 +140,12 @@ describe('authorizationCodeFlow', () => {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      body: 'grant_type=authorization_code&code=1234&code_verifier=jd83ifkhd29i&redirect_uri=https%3A%2F%2Ftest.com%2Fcallback'
+      body: 'grant_type=authorization_code&client_id=1234&code=1234&code_verifier=jd83ifkhd29i&redirect_uri=https%3A%2F%2Ftest.com%2Fcallback'
     });
   });
 });
 
-describe('clientCredentialsFlow', () => {
+describe('clientCredentials', () => {
   it('returns handler for endpoint', async () => {
     const client = jest.fn(() =>
       Promise.resolve({
@@ -195,7 +156,7 @@ describe('clientCredentialsFlow', () => {
       })
     );
 
-    await clientCredentialsFlow(client);
+    await clientCredentials(client);
 
     expect(client).toHaveBeenCalledWith({
       method: 'POST',

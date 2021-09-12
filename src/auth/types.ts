@@ -20,29 +20,36 @@ export type Scope =
   | 'user-follow-read'
   | 'user-follow-modify';
 
-export interface AuthorizationUrlParameters {
+export interface BaseAuthorizationUrlParameters {
   client_id: string;
   redirect_uri: string;
   state?: string;
   scope?: Scope[];
+}
+
+export interface AuthorizationCodeUrlParameters
+  extends BaseAuthorizationUrlParameters {
   show_dialog?: boolean;
-  response_type: 'code' | 'token';
-}
-
-export interface AuthorizationCodeFlowUrlParameters
-  extends AuthorizationUrlParameters {
   response_type: 'code';
-  code_challenge?: string;
 }
 
-export interface ImplicitGrantFlowUrlParameters
-  extends AuthorizationUrlParameters {
+export interface AuthorizationCodeWithPkceUrlParameters
+  extends BaseAuthorizationUrlParameters {
+  response_type: 'code';
+  code_challenge_method: 'S256';
+  code_challenge: string;
+}
+
+export interface ImplicitGrantUrlParameters
+  extends BaseAuthorizationUrlParameters {
+  show_dialog?: boolean;
   response_type: 'token';
 }
 
 export type CreateAuthorizationUrlParameters =
-  | AuthorizationCodeFlowUrlParameters
-  | ImplicitGrantFlowUrlParameters;
+  | AuthorizationCodeUrlParameters
+  | ImplicitGrantUrlParameters
+  | AuthorizationCodeWithPkceUrlParameters;
 
 export interface RefreshAccessTokenParameters {
   refresh_token: string;
@@ -57,30 +64,25 @@ export interface AccessToken {
 
 export type RefreshAccessTokenResponse = Promise<Response<AccessToken>>;
 
-export interface AuthorizationCodeFlowParameters {
+export interface AuthorizationCodeParameters {
   code: string;
   redirect_uri: string;
-  code_verifier?: string;
 }
 
-export interface RefreshableAccessToken {
-  access_token: string;
-  expires_in: number;
+export interface AuthorizationCodeWithPkceParameters
+  extends AuthorizationCodeParameters {
+  client_id: string;
+  code_verifier: string;
+}
+
+export interface RefreshableAccessToken extends AccessToken {
   refresh_token: string;
-  scope: string;
-  token_type: string;
 }
 
-export type AuthorizationCodeFlowResponse = Promise<
+export type AuthorizationCodeResponse = Promise<
   Response<RefreshableAccessToken>
 >;
 
-export interface ClientCredentialsResponse {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-}
-
-export type ClientCredentialsFlowResponse = Promise<
-  Response<ClientCredentialsResponse>
+export type ClientCredentialsResponse = Promise<
+  Response<Omit<AccessToken, 'scope'>>
 >;
