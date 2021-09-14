@@ -8,7 +8,7 @@ export function gather<
     params?: any
   ) => Promise<Response<UnpackResponse<ReturnType<T>>>>,
   U extends (body: UnpackResponse<ReturnType<T>>) => any
->(client: T, check: U, options?: PaginateOptions) {
+>(client: T, pick: U, options?: PaginateOptions) {
   return async function (...args: Parameters<T>) {
     const result: Array<
       ReturnType<U> extends Array<infer U> ? U : ReturnType<U>
@@ -17,7 +17,7 @@ export function gather<
     const pages = paginate(client, options)(...args);
 
     for await (const page of pages) {
-      const toPush = check(page);
+      const toPush = pick(page);
       result.push(...(Array.isArray(toPush) ? toPush : toPush));
     }
 
