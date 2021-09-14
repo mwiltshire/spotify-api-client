@@ -283,6 +283,28 @@ describe('getRecommendations', () => {
       scheme: 'Bearer'
     });
   });
+
+  it('calls client with correct request config - w/o optional params', async () => {
+    const client = jest.fn(() =>
+      Promise.resolve({
+        status: 200,
+        headers: {},
+        body: {},
+        request: {} as RequestConfig
+      })
+    );
+
+    await getRecommendations(client);
+
+    expect(client).toHaveBeenCalledWith({
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      url: 'https://api.spotify.com/v1/recommendations',
+      scheme: 'Bearer'
+    });
+  });
 });
 
 describe('getRecommendationGenres', () => {

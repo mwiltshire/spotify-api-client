@@ -3,7 +3,7 @@ import { get } from '../http/request';
 import { formatPathParams } from '../utils';
 import {
   GetCategoryParameters,
-  GetCategoryParametersResponse,
+  GetCategoryResponse,
   GetPlaylistsForCategoryParameters,
   GetPlaylistsForCategoryResponse,
   GetCategoriesParameters,
@@ -21,7 +21,7 @@ import { Fetcher } from '../types';
 export function getCategory(
   client: Fetcher,
   parameters: GetCategoryParameters
-): GetCategoryParametersResponse {
+): GetCategoryResponse {
   const { category_id, ...rest } = parameters;
   const url = formatPathParams({
     url: ENDPOINTS.CATEGORY,
@@ -70,7 +70,7 @@ export function getNewReleases(
 
 export function getRecommendations(
   client: Fetcher,
-  parameters: GetRecommendationsParameters
+  parameters: GetRecommendationsParameters = {}
 ): GetRecommendationsResponse {
   return client(
     get({
