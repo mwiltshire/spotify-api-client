@@ -17,7 +17,7 @@ export interface GetCategoryParameters extends CountryOption, LocaleOption {
   category_id: string;
 }
 
-export type GetCategoryParametersResponse = Promise<Response<CategoryObject>>;
+export type GetCategoryResponse = Promise<Response<CategoryObject>>;
 
 export interface GetPlaylistsForCategoryParameters
   extends CountryOption,
