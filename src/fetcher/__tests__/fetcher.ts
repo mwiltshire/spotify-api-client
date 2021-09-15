@@ -138,4 +138,26 @@ describe('fetcher', () => {
       expect(error.message).toBe('[spotify api client] unknown error');
     }
   });
+
+  it('will not try to JSON parse on 204 response', async () => {
+    const mockJson = jest.fn(() => {
+      throw new Error();
+    });
+
+    (global.fetch as any) = jest.fn(() =>
+      Promise.resolve({
+        status: 204,
+        ok: true,
+        json: mockJson
+      })
+    );
+
+    const res = await fetcher({
+      url: 'https://api.test.com/test',
+      method: 'GET'
+    });
+
+    expect(mockJson).not.toHaveBeenCalled();
+    expect(res.body).toBeUndefined();
+  });
 });
