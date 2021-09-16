@@ -68,29 +68,23 @@ export async function fetcher(
     init.body = body;
   }
 
-  try {
-    const response = await fetch(requestUrl, init);
-    let json;
+  const response = await fetch(requestUrl, init);
+  let json;
 
-    // Don't try to parse 204 NO CONTENT response.
-    if (response.status !== 204) {
-      json = await response.json();
-    }
+  // Don't try to parse 204 NO CONTENT response.
+  if (response.status !== 204) {
+    json = await response.json();
+  }
 
-    if (!response.ok) {
-      const error = getError(json, response);
-      throw error;
-    }
-
-    return {
-      body: json,
-      status: response.status,
-      headers: response.headers,
-      request
-    };
-  } catch (error) {
-    // Just rethrow error from try block or any
-    // network-related errors, AbortError etc.
+  if (!response.ok) {
+    const error = getError(json, response);
     throw error;
   }
+
+  return {
+    body: json,
+    status: response.status,
+    headers: response.headers,
+    request
+  };
 }
