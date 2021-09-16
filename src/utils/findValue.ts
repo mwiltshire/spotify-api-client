@@ -11,10 +11,6 @@ export function findValue<T = any>(
   }
 
   for (const k in obj) {
-    if (k === key) {
-      return obj[k];
-    }
-
     if (isPlainObject(obj[k])) {
       result = findValue(obj[k], key);
     }
