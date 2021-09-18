@@ -1,11 +1,12 @@
-import { AuthenticationError, RegularError } from '../error';
+import { isPlainObject, stringifyEntries } from '../utils';
 import {
   AuthenticationErrorResponse,
   RegularErrorResponse,
-  RequestConfig,
-  Response as SpotifyResponse
-} from '../types';
-import { isPlainObject, stringifyEntries } from '../utils';
+  PlayerErrorResponse,
+  PlayerError
+} from '../error';
+import { AuthenticationError, RegularError } from '../error';
+import { RequestConfig, Response as SpotifyResponse } from '../types';
 
 function prepareSearchParams(params: Record<string, any>) {
   return stringifyEntries(Object.entries(params));
@@ -14,7 +15,11 @@ function prepareSearchParams(params: Record<string, any>) {
 function isRegularApiError(
   body: Record<string, any>
 ): body is RegularErrorResponse {
-  return isPlainObject(body.error);
+  return isPlainObject(body.error) && !body.error.reason;
+}
+
+function isPlayerError(body: Record<string, any>): body is PlayerErrorResponse {
+  return isPlainObject(body.error) && typeof body.error.reason === 'string';
 }
 
 function isAuthenticationError(
@@ -29,8 +34,14 @@ function getError(body: Record<string, any>, response: Response) {
   if (isRegularApiError(body)) {
     return new RegularError({
       message: body.error.message,
-      reason: body.error.reason,
       status,
+      response
+    });
+  } else if (isPlayerError(body)) {
+    return new PlayerError({
+      message: body.error.message,
+      status,
+      reason: body.error.reason,
       response
     });
   } else if (isAuthenticationError(body)) {

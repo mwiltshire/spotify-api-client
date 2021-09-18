@@ -1,4 +1,8 @@
-import { AuthenticationErrorParameters, RegularErrorParameters } from './types';
+import {
+  BaseApiErrorParameters,
+  AuthenticationErrorParameters,
+  PlayerErrorParameters
+} from './types';
 
 class BaseApiError extends Error {
   status: number;
@@ -23,10 +27,16 @@ export class AuthenticationError extends BaseApiError {
 }
 
 export class RegularError extends BaseApiError {
-  reason?: string;
+  constructor(params: BaseApiErrorParameters) {
+    super({ ...params, name: 'RegularError' });
+  }
+}
 
-  constructor({ reason, ...rest }: RegularErrorParameters) {
-    super({ ...rest, name: 'RegularError' });
+export class PlayerError extends BaseApiError {
+  reason: string;
+
+  constructor({ reason, ...rest }: PlayerErrorParameters) {
+    super({ ...rest, name: 'PlayerError' });
     this.reason = reason;
   }
 }

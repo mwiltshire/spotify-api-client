@@ -87,6 +87,35 @@ describe('fetcher', () => {
     }
   });
 
+  it('throws if response.ok is false - player error', async () => {
+    (global.fetch as any) = jest.fn(() =>
+      Promise.resolve({
+        status: 400,
+        ok: false,
+        json: () =>
+          Promise.resolve({
+            error: { message: 'ERROR', reason: 'RATE_LIMITED' }
+          })
+      })
+    );
+
+    try {
+      await fetcher({
+        url: 'https://api.test.com/test',
+        method: 'PUT',
+        headers: {
+          Authorization: 'Bearer 1234'
+        },
+        params: {
+          foo: 123
+        }
+      });
+    } catch (error) {
+      expect(error.name).toBe('PlayerError');
+      expect(error.reason).toBe('RATE_LIMITED');
+    }
+  });
+
   it('throws if response.ok is false - authentication error', async () => {
     (global.fetch as any) = jest.fn(() =>
       Promise.resolve({

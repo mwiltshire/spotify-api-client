@@ -5,12 +5,19 @@ import { getCategories } from '../../src/browse';
 import { authorizationCode } from '../../src/auth';
 import {
   unauthorizedRequest,
+  pauseError,
   authorizationError
 } from '../../mocks/handlers/errors';
-import { categories } from '../../mocks/handlers/categories';
+// import { categories } from '../../mocks/handlers/categories';
 import { paginate } from '../../src/pagination';
+import { pause } from '../../src/player';
 
-const server = setupServer(unauthorizedRequest, authorizationError, categories);
+const server = setupServer(
+  unauthorizedRequest,
+  pauseError,
+  authorizationError
+  // categories
+);
 
 beforeAll(() => {
   server.listen();
@@ -30,6 +37,18 @@ describe('API errors', () => {
       expect(error.name).toBe('RegularError');
       expect(error.status).toBe(401);
       expect(error.message).toBe('UNAUTHORIZED');
+    }
+  });
+
+  test('failed request to player endpoint throws PlayerError', async () => {
+    const client = createClient(fetcher);
+
+    try {
+      await pause(client);
+    } catch (error) {
+      expect(error.name).toBe('PlayerError');
+      expect(error.status).toBe(400);
+      expect(error.reason).toBe('ALREADY_PAUSED');
     }
   });
 
