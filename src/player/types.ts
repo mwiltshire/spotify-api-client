@@ -13,8 +13,6 @@ import {
 
 export type RepeatState = 'track' | 'context' | 'off';
 
-export type ShuffleState = 'on' | 'off';
-
 export interface AddToPlaybackQueueParameters {
   /** The uri of the item to add to the queue. */
   uri: string;
@@ -150,7 +148,7 @@ export type PlayResponse = Promise<Response<void>>;
 
 export interface ShuffleParameters extends DeviceIdOption {
   /** true: Shuffle user’s playback, false: Do not shuffle user’s playback. */
-  state: ShuffleState;
+  state: boolean;
 }
 
 export type ShuffleResponse = Promise<Response<void>>;
