@@ -1,4 +1,4 @@
-import { me, getUser } from '../user';
+import { me, getUser } from '../users';
 import { RequestConfig } from '../../types';
 
 describe('me', () => {
