@@ -28,7 +28,7 @@ function isAuthenticationError(
   return typeof body.error === 'string';
 }
 
-function getError(body: Record<string, any>, response: Response) {
+function getError(body: Record<string, any>, response: SpotifyResponse) {
   const { status } = response;
 
   if (isRegularApiError(body)) {
@@ -87,15 +87,17 @@ export async function fetcher(
     json = await response.json();
   }
 
-  if (!response.ok) {
-    const error = getError(json, response);
-    throw error;
-  }
-
-  return {
+  const fetcherResponse: SpotifyResponse = {
     body: json,
     status: response.status,
     headers: response.headers,
     request
   };
+
+  if (!response.ok) {
+    const error = getError(json, fetcherResponse);
+    throw error;
+  }
+
+  return fetcherResponse;
 }

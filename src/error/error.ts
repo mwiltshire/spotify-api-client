@@ -1,3 +1,4 @@
+import { Response } from '../types';
 import {
   BaseApiErrorParameters,
   AuthenticationErrorParameters,

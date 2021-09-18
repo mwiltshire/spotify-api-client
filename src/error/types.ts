@@ -1,3 +1,5 @@
+import { Response } from '../types';
+
 export type PlayerErrorReason =
   /** The command requires a previous track, but there is none in the context. */
   | 'NO_PREV_TRACK'
