@@ -29,11 +29,6 @@ export interface SearchParameters<T = SearchType | SearchType[]>
   include_external?: 'audio';
 }
 
-export interface TypeSpecificSearchQueryParameters
-  extends Omit<SearchParameters, 'type'> {
-  q: string;
-}
-
 export interface AlbumSearchResult {
   albums: PagingObject<SimplifiedAlbumObject>;
 }
