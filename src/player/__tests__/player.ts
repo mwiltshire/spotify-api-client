@@ -551,7 +551,7 @@ describe('shuffle', () => {
     );
 
     await shuffle(client, {
-      state: 'on',
+      state: true,
       device_id: '8dJ3df8dfj9kdk'
     });
 
@@ -562,7 +562,7 @@ describe('shuffle', () => {
       },
       url: 'https://api.spotify.com/v1/me/player/shuffle',
       params: {
-        state: 'on',
+        state: true,
         device_id: '8dJ3df8dfj9kdk'
       },
       scheme: 'Bearer'
