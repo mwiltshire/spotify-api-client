@@ -33,6 +33,11 @@ export interface AuthorizationCodeUrlParameters
   response_type: 'code';
 }
 
+export type CreateAuthorizationCodeUrlParameters = Omit<
+  AuthorizationCodeUrlParameters,
+  'response_type'
+>;
+
 export interface AuthorizationCodeWithPkceUrlParameters
   extends BaseAuthorizationUrlParameters {
   response_type: 'code';
@@ -40,11 +45,21 @@ export interface AuthorizationCodeWithPkceUrlParameters
   code_challenge: string;
 }
 
+export type CreateAuthorizationCodeWithPkceUrlParameters = Omit<
+  AuthorizationCodeWithPkceUrlParameters,
+  'response_type' | 'code_challenge_method'
+>;
+
 export interface ImplicitGrantUrlParameters
   extends BaseAuthorizationUrlParameters {
   show_dialog?: boolean;
   response_type: 'token';
 }
+
+export type CreateImplicitGrantUrlParameters = Omit<
+  ImplicitGrantUrlParameters,
+  'response_type'
+>;
 
 export type CreateAuthorizationUrlParameters =
   | AuthorizationCodeUrlParameters

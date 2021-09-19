@@ -7,32 +7,28 @@ import {
   MarketOption,
   CategoryObject,
   PagingObject,
-  SimplifiedPlaylistObject,
-  SimplifiedAlbumObject,
-  RecommendationsObject
+  RecommendationsObject,
+  CategoryIdObject,
+  PagingSimplifiedPlaylistsObject,
+  PagingCategoriesObject,
+  MessageObject,
+  PagingSimplifiedAlbumsObject,
+  GenresObject
 } from '../types';
 
-export interface GetCategoryParameters extends CountryOption, LocaleOption {
-  /** The Spotify category ID for the category. */
-  category_id: string;
-}
+export type GetCategoryParameters = CountryOption &
+  LocaleOption &
+  CategoryIdObject;
 
 export type GetCategoryResponse = Promise<Response<CategoryObject>>;
 
-export interface GetPlaylistsForCategoryParameters
-  extends CountryOption,
-    LimitOption,
-    OffsetOption {
-  /** The Spotify category ID for the category. */
-  category_id: string;
-}
-
-export interface PlaylistsForCategory {
-  playlists: PagingObject<SimplifiedPlaylistObject>;
-}
+export type GetPlaylistsForCategoryParameters = CountryOption &
+  LimitOption &
+  OffsetOption &
+  CategoryIdObject;
 
 export type GetPlaylistsForCategoryResponse = Promise<
-  Response<PlaylistsForCategory>
+  Response<PagingSimplifiedPlaylistsObject>
 >;
 
 export interface GetCategoriesParameters
@@ -41,11 +37,7 @@ export interface GetCategoriesParameters
     LimitOption,
     OffsetOption {}
 
-export interface Categories {
-  categories: PagingObject<CategoryObject>;
-}
-
-export type GetCategoriesResponse = Promise<Response<Categories>>;
+export type GetCategoriesResponse = Promise<Response<PagingCategoriesObject>>;
 
 export interface GetFeaturedPlaylistsParameters
   extends LocaleOption,
@@ -56,24 +48,18 @@ export interface GetFeaturedPlaylistsParameters
   timestamp?: string;
 }
 
-export interface FeaturedPlaylists {
-  message: string;
-  playlists: PagingObject<SimplifiedPlaylistObject>;
-}
-
-export type GetFeaturedPlaylistsResponse = Promise<Response<FeaturedPlaylists>>;
+export type GetFeaturedPlaylistsResponse = Promise<
+  Response<PagingSimplifiedPlaylistsObject & MessageObject>
+>;
 
 export interface GetNewReleasesParameters
   extends CountryOption,
     LimitOption,
     OffsetOption {}
 
-export interface NewReleases {
-  message: string;
-  albums: PagingObject<SimplifiedAlbumObject>;
-}
-
-export type GetNewReleasesResponse = Promise<Response<NewReleases>>;
+export type GetNewReleasesResponse = Promise<
+  Response<PagingSimplifiedAlbumsObject & MessageObject>
+>;
 
 /**
  * See endpoint documentation for in-depth descriptions for
@@ -133,10 +119,4 @@ export type GetRecommendationsResponse = Promise<
   Response<PagingObject<RecommendationsObject>>
 >;
 
-export interface RecommendationGenres {
-  genres: string[];
-}
-
-export type GetRecommendationGenresResponse = Promise<
-  Response<RecommendationGenres>
->;
+export type GetRecommendationGenresResponse = Promise<Response<GenresObject>>;

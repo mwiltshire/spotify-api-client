@@ -78,7 +78,7 @@ describe('getTopTracksForArtist', () => {
 
     await getTopTracksForArtist(client, {
       id: '0OdUWJ0sBjDrqHygGUXeCF',
-      country: 'US'
+      market: 'US'
     });
 
     expect(client).toHaveBeenCalledWith({

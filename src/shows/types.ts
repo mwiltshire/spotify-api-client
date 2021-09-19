@@ -6,30 +6,23 @@ import {
   ShowObject,
   PagingObject,
   SimplifiedEpisodeObject,
-  NullableSimplifiedShows
+  NullableSimplifiedShows,
+  IdObject,
+  IdsObject
 } from '../types';
 
-export interface GetShowParameters extends MarketOption {
-  /** The Spotify ID for the show. */
-  id: string;
-}
+export type GetShowParameters = MarketOption & IdObject;
 
 export type GetShowResponse = Promise<Response<ShowObject>>;
 
-export interface GetShowsParameters extends MarketOption {
-  /** Array of Spotify show IDs. */
-  ids: string[];
-}
+export type GetShowsParameters = MarketOption & IdsObject;
 
 export type GetShowsResponse = Promise<Response<NullableSimplifiedShows>>;
 
-export interface GetEpisodesForShowParameters
-  extends LimitOption,
-    OffsetOption,
-    MarketOption {
-  /** The Spotify ID for the show. */
-  id: string;
-}
+export type GetEpisodesForShowParameters = LimitOption &
+  OffsetOption &
+  MarketOption &
+  IdObject;
 
 export type GetEpisodesForShowResponse = Promise<
   Response<PagingObject<SimplifiedEpisodeObject>>

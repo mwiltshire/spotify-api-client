@@ -8,22 +8,21 @@ import {
   Tracks,
   LimitOption,
   OffsetOption,
-  CountryOption
+  CountryOption,
+  MarketOption,
+  IdObject,
+  IdsObject
 } from '../types';
 
-export interface GetArtistParameters {
-  /** The Spotify ID for the artist. */
-  id: string;
-}
+export type GetArtistParameters = IdObject;
 
 export type GetArtistResponse = Promise<Response<ArtistObject>>;
 
 export interface GetAlbumsForArtistParameters
   extends LimitOption,
     OffsetOption,
-    CountryOption {
-  /** The Spotify ID for the artist. */
-  id: string;
+    CountryOption,
+    IdObject {
   /** Array of keywords that will be used to filter the response.
    * If not supplied, all album types will be returned.
    * Valid values are: album, single, appears_on, compilation */
@@ -34,24 +33,14 @@ export type GetAlbumsForArtistResponse = Promise<
   Response<PagingObject<SimplifiedAlbumObject>>
 >;
 
-export interface GetTopTracksForArtistParameters
-  extends Required<CountryOption> {
-  /** The Spotify ID for the artist. */
-  id: string;
-}
+export type GetTopTracksForArtistParameters = Required<MarketOption> & IdObject;
 
 export type GetTopTracksForArtistResponse = Promise<Response<Tracks>>;
 
-export interface GetRelatedArtistsForArtistParameters {
-  /** The Spotify ID for the artist. */
-  id: string;
-}
+export type GetRelatedArtistsForArtistParameters = IdObject;
 
 export type GetRelatedArtistsForArtistResponse = Promise<Response<Artists>>;
 
-export interface GetArtistsParameters {
-  /** Array of Spotify IDs for the artists. Maximum: 50 IDs. */
-  ids: string[];
-}
+export type GetArtistsParameters = IdsObject;
 
 export type GetArtistsResponse = Promise<Response<NullableArtists>>;

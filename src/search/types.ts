@@ -3,13 +3,12 @@ import {
   LimitOption,
   PagingOption,
   MarketOption,
-  PagingObject,
-  SimplifiedAlbumObject,
-  ArtistObject,
-  TrackObject,
-  SimplifiedShowObject,
-  SimplifiedEpisodeObject,
-  SimplifiedPlaylistObject
+  PagingArtistsObject,
+  PagingSimplifiedAlbumsObject,
+  PagingSimplifiedEpisodesObject,
+  PagingSimplifiedPlaylistsObject,
+  PagingSimplifiedShowsObject,
+  PagingTracksObject
 } from '../types';
 
 export type SearchType =
@@ -29,37 +28,12 @@ export interface SearchParameters<T = SearchType | SearchType[]>
   include_external?: 'audio';
 }
 
-export interface AlbumSearchResult {
-  albums: PagingObject<SimplifiedAlbumObject>;
-}
-
-export interface ArtistSearchResult {
-  artists: PagingObject<ArtistObject>;
-}
-
-export interface TrackSearchResult {
-  tracks: PagingObject<TrackObject>;
-}
-
-export interface ShowSearchResult {
-  shows: PagingObject<SimplifiedShowObject>;
-}
-
-export interface EpisodeSearchResult {
-  episodes: PagingObject<SimplifiedEpisodeObject>;
-}
-
-export interface PlaylistSearchResult {
-  playlists: PagingObject<SimplifiedPlaylistObject>;
-}
-
-export interface SearchResult
-  extends AlbumSearchResult,
-    ArtistSearchResult,
-    TrackSearchResult,
-    ShowSearchResult,
-    EpisodeSearchResult,
-    PlaylistSearchResult {}
+export type SearchResult = PagingSimplifiedAlbumsObject &
+  PagingArtistsObject &
+  PagingTracksObject &
+  PagingSimplifiedShowsObject &
+  PagingSimplifiedEpisodesObject &
+  PagingSimplifiedPlaylistsObject;
 
 type MapSearchResultTypes<T> = T extends 'artist'
   ? 'artists'
@@ -83,30 +57,38 @@ export type PickSearchResult<T extends SearchType | SearchType[]> =
   T extends SearchType[]
     ? PickSearchResultType<T[number]>
     : T extends 'artist'
-    ? ArtistSearchResult
+    ? PagingArtistsObject
     : T extends 'album'
-    ? AlbumSearchResult
+    ? PagingSimplifiedAlbumsObject
     : T extends 'playlist'
-    ? PlaylistSearchResult
+    ? PagingSimplifiedPlaylistsObject
     : T extends 'show'
-    ? ShowSearchResult
+    ? PagingSimplifiedShowsObject
     : T extends 'track'
-    ? TrackSearchResult
+    ? PagingTracksObject
     : T extends 'episode'
-    ? EpisodeSearchResult
+    ? PagingSimplifiedEpisodesObject
     : never;
 
-export type SearchAlbumsResponse = Promise<Response<AlbumSearchResult>>;
+export type SearchAlbumsResponse = Promise<
+  Response<PagingSimplifiedAlbumsObject>
+>;
 
-export type SearchArtistsResponse = Promise<Response<ArtistSearchResult>>;
+export type SearchArtistsResponse = Promise<Response<PagingArtistsObject>>;
 
-export type SearchEpisodesResponse = Promise<Response<EpisodeSearchResult>>;
+export type SearchEpisodesResponse = Promise<
+  Response<PagingSimplifiedEpisodesObject>
+>;
 
-export type SearchPlaylistsResponse = Promise<Response<PlaylistSearchResult>>;
+export type SearchPlaylistsResponse = Promise<
+  Response<PagingSimplifiedPlaylistsObject>
+>;
 
-export type SearchShowsResponse = Promise<Response<ShowSearchResult>>;
+export type SearchShowsResponse = Promise<
+  Response<PagingSimplifiedShowsObject>
+>;
 
-export type SearchTracksResponse = Promise<Response<TrackSearchResult>>;
+export type SearchTracksResponse = Promise<Response<PagingTracksObject>>;
 
 export type SearchResponse<T extends SearchType | SearchType[]> = Promise<
   Response<PickSearchResult<T>>

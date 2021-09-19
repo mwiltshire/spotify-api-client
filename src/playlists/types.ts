@@ -9,18 +9,15 @@ import {
   ImageObject,
   PlaylistTrackObject,
   TrackObject,
-  EpisodeObject
+  EpisodeObject,
+  PlaylistIdObject,
+  SnapshotIdObject,
+  UserIdObject,
+  UrisObject,
+  PositionObject,
+  UriObject,
+  PositionsObject
 } from '../types';
-
-export interface SnapshotId {
-  /** The Spotify snapshot ID for the playlist. */
-  snapshot_id: string;
-}
-
-export interface PlaylistId {
-  /** The Spotify ID for the playlist. */
-  playlist_id: string;
-}
 
 export interface PlaylistParameters {
   /** The new name for the playlist. */
@@ -39,42 +36,30 @@ export interface PlaylistParameters {
   description?: string;
 }
 
-export interface AddItemsToPlaylistParameters extends PlaylistId {
-  /** Array of Spotify URIs to add. A maximum of 100 can
-   * be added in a single request. */
-  uris: string[];
-  /** The position to insert the items at, a zero-based
-   * index. */
-  position?: number;
-}
+export type AddItemsToPlaylistParameters = PlaylistIdObject &
+  UrisObject &
+  Partial<PositionObject>;
 
-export type AddItemsToPlaylistResponse = Promise<Response<SnapshotId>>;
+export type AddItemsToPlaylistResponse = Promise<Response<SnapshotIdObject>>;
 
-export interface ChangeDetailsForPlaylistParameters
-  extends Partial<PlaylistParameters>,
-    PlaylistId {}
+export type ChangeDetailsForPlaylistParameters = Partial<PlaylistParameters> &
+  PlaylistIdObject;
 
 export type ChangeDetailsForPlaylistResponse = Promise<Response<void>>;
 
-export interface CreatePlaylistParameters extends PlaylistParameters {
-  /** The Spotify user ID. */
-  user_id: string;
-}
+export type CreatePlaylistParameters = PlaylistParameters & UserIdObject;
 
 export type CreatePlaylistResponse = Promise<Response<PlaylistObject>>;
 
-export interface GetMyPlaylistsParameters extends LimitOption, OffsetOption {}
+export type GetMyPlaylistsParameters = LimitOption & OffsetOption;
 
 export type GetPlaylistsResponse = Promise<
   Response<PagingObject<SimplifiedPlaylistObject>>
 >;
 
-export interface GetPlaylistsForUserParameters
-  extends LimitOption,
-    OffsetOption {
-  /** The Spotify user ID. */
-  user_id: string;
-}
+export type GetPlaylistsForUserParameters = LimitOption &
+  OffsetOption &
+  UserIdObject;
 
 export type PlaylistItemType =
   | ['track']
@@ -82,7 +67,9 @@ export type PlaylistItemType =
   | ['track', 'episode']
   | ['episode', 'track'];
 
-export interface GetPlaylistParameters<T> extends MarketOption, PlaylistId {
+export interface GetPlaylistParameters<T>
+  extends MarketOption,
+    PlaylistIdObject {
   /** Filters for the query: Array of fields to return.
    * If omitted, all fields are returned. */
   fields?: string[];
@@ -104,14 +91,13 @@ export type GetPlaylistResponse<T> = Promise<
   >
 >;
 
-export type GetCoverImageForPlaylistParameters = PlaylistId;
+export type GetCoverImageForPlaylistParameters = PlaylistIdObject;
 
 export type GetCoverImageForPlaylistResponse = Promise<Response<ImageObject[]>>;
 
-export interface ListItemsInPlaylistParameters<T>
-  extends GetPlaylistParameters<T>,
-    LimitOption,
-    OffsetOption {}
+export type ListItemsInPlaylistParameters<T> = GetPlaylistParameters<T> &
+  LimitOption &
+  OffsetOption;
 
 export type ListItemsInPlaylistResponse<T> = Promise<
   Response<
@@ -125,29 +111,25 @@ export type ListItemsInPlaylistResponse<T> = Promise<
   >
 >;
 
-export interface PlaylistTrack {
-  /** Spotify URI for the playlist item */
-  uri: string;
-  /** The positions of the item in the playlist.
-   * Zero-indexed.
-   */
-  positions?: number[];
-}
+export type PlaylistTrackIdentifierObject = UriObject &
+  Partial<PositionsObject>;
 
 export interface RemoveItemsFromPlaylistParameters
-  extends PlaylistId,
-    Partial<SnapshotId> {
+  extends PlaylistIdObject,
+    Partial<SnapshotIdObject> {
   /** An array of objects containing Spotify URIs
    * and optional positions of the tracks or episodes
    * to remove. */
-  tracks: PlaylistTrack[];
+  tracks: PlaylistTrackIdentifierObject[];
 }
 
-export type RemoveItemsFromPlaylistResponse = Promise<Response<SnapshotId>>;
+export type RemoveItemsFromPlaylistResponse = Promise<
+  Response<SnapshotIdObject>
+>;
 
 export interface ReorderItemsInPlaylistParameters
-  extends PlaylistId,
-    Partial<SnapshotId> {
+  extends PlaylistIdObject,
+    Partial<SnapshotIdObject> {
   /** The position of the first item to be reordered. */
   range_start: number;
   /** The position where the items should be inserted. */
@@ -156,17 +138,17 @@ export interface ReorderItemsInPlaylistParameters
   range_length?: number;
 }
 
-export type ReorderItemsInPlaylistResponse = Promise<Response<SnapshotId>>;
+export type ReorderItemsInPlaylistResponse = Promise<
+  Response<SnapshotIdObject>
+>;
 
-export interface ReplaceItemsInPlaylistParameters extends PlaylistId {
-  /** Array of Spotify URIs. A maximum of 100 items can
-   * be set in one request. */
-  uris?: string[];
-}
+export type ReplaceItemsInPlaylistParameters = PlaylistIdObject &
+  Partial<UrisObject>;
 
 export type ReplaceItemsInPlaylistResponse = Promise<Response<void>>;
 
-export interface UploadCoverImageForPlaylistParameters extends PlaylistId {
+export interface UploadCoverImageForPlaylistParameters
+  extends PlaylistIdObject {
   /** Base64 encoded JPEG image data, maximum payload
    * size is 256 KB. */
   image: string;

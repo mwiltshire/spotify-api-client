@@ -5,41 +5,33 @@ import {
   AudioFeaturesObject,
   NullableAudioFeatures,
   NullableTracks,
-  TrackObject
+  TrackObject,
+  IdObject,
+  IdsObject
 } from '../types';
 
-export interface TrackIdParameter {
-  /** The Spotify ID for the track. */
-  id: string;
-}
-
-export interface TrackIdsParameter {
-  /** Array of Spotify track IDs. Maximum: 100 IDs. */
-  ids: string[];
-}
-
-export type GetAudioAnalysisForTrackParameters = TrackIdParameter;
+export type GetAudioAnalysisForTrackParameters = IdObject;
 
 export type GetAudioAnalysisForTrackResponse = Promise<
   Response<AudioAnalysisObject>
 >;
 
-export type GetAudioFeaturesForTrackParameters = TrackIdParameter;
+export type GetAudioFeaturesForTrackParameters = IdObject;
 
 export type GetAudioFeaturesForTrackResponse = Promise<
   Response<AudioFeaturesObject>
 >;
 
-export type GetAudioFeaturesForTracksParameters = TrackIdsParameter;
+export type GetAudioFeaturesForTracksParameters = IdsObject;
 
 export type GetAudioFeaturesForTracksResponse = Promise<
   Response<NullableAudioFeatures>
 >;
 
-export interface GetTracksParameters extends MarketOption, TrackIdsParameter {}
+export type GetTracksParameters = MarketOption & IdsObject;
 
 export type GetTracksResponse = Promise<Response<NullableTracks>>;
 
-export interface GetTrackParameters extends MarketOption, TrackIdParameter {}
+export type GetTrackParameters = MarketOption & IdObject;
 
 export type GetTrackResponse = Promise<Response<TrackObject>>;

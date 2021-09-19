@@ -2,14 +2,14 @@ import * as ENDPOINTS from './endpoints';
 import {
   AuthorizationCodeResponse,
   AuthorizationCodeParameters,
-  AuthorizationCodeUrlParameters,
   ClientCredentialsResponse,
   CreateAuthorizationUrlParameters,
-  ImplicitGrantUrlParameters,
   RefreshAccessTokenParameters,
   RefreshAccessTokenResponse,
   AuthorizationCodeWithPkceParameters,
-  AuthorizationCodeWithPkceUrlParameters
+  CreateAuthorizationCodeUrlParameters,
+  CreateAuthorizationCodeWithPkceUrlParameters,
+  CreateImplicitGrantUrlParameters
 } from './types';
 import { Fetcher, RequestConfig } from '../types';
 import { stringifyEntries, removeUndefinedEntries } from '../utils';
@@ -31,7 +31,7 @@ function createAuthorizationUrl(
 }
 
 export function createImplicitGrantUrl(
-  parameters: Omit<ImplicitGrantUrlParameters, 'response_type'>
+  parameters: CreateImplicitGrantUrlParameters
 ) {
   return createAuthorizationUrl({
     ...parameters,
@@ -40,7 +40,7 @@ export function createImplicitGrantUrl(
 }
 
 export function createAuthorizationCodeUrl(
-  parameters: Omit<AuthorizationCodeUrlParameters, 'response_type'>
+  parameters: CreateAuthorizationCodeUrlParameters
 ) {
   return createAuthorizationUrl({
     ...parameters,
@@ -49,10 +49,7 @@ export function createAuthorizationCodeUrl(
 }
 
 export function createAuthorizationCodeWithPkceUrl(
-  parameters: Omit<
-    AuthorizationCodeWithPkceUrlParameters,
-    'response_type' | 'code_challenge_method'
-  >
+  parameters: CreateAuthorizationCodeWithPkceUrlParameters
 ) {
   return createAuthorizationUrl({
     ...parameters,

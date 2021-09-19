@@ -8,7 +8,11 @@ import {
   EpisodeObject,
   LimitOption,
   MarketOption,
-  DeviceIdOption
+  DeviceIdOption,
+  DevicesObject,
+  UriObject,
+  DeviceIdsObject,
+  PositionObject
 } from '../types';
 
 export type RepeatState = 'track' | 'context' | 'off';
@@ -22,12 +26,7 @@ export interface AddToPlaybackQueueParameters {
 
 export type AddToPlaybackQueueResponse = Promise<Response<void>>;
 
-export interface AvailableDevices {
-  /** A list of 0..n device objects */
-  devices: DeviceObject[];
-}
-
-export type GetAvailableDevicesResponse = Promise<Response<AvailableDevices>>;
+export type GetAvailableDevicesResponse = Promise<Response<DevicesObject>>;
 
 export interface GetCurrentPlaybackContextParameters extends MarketOption {
   /** Array of item types that your client supports besides the
@@ -117,16 +116,6 @@ export type SkipTrackParameters = DeviceIdOption;
 
 export type SkipTrackResponse = Promise<Response<void>>;
 
-export interface PlayOffsetPosition {
-  /** Zero based and can’t be negative */
-  position: number;
-}
-
-export interface PlayOffsetUri {
-  /** String representing the uri of the item to start at */
-  uri: string;
-}
-
 export interface PlayParameters extends DeviceIdOption {
   /** Spotify URI of the context to play. Valid contexts are albums, artists,
    * playlists. Example: {"context_uri": "spotify:album:1Je1IMUlBXcx1Fz0WE7oPT"} */
@@ -137,7 +126,7 @@ export interface PlayParameters extends DeviceIdOption {
   /** Indicates from where in the context playback should start. Only available
    * when context_uri corresponds to an album or playlist object, or when the
    * uris parameter is used. */
-  offset?: PlayOffsetPosition | PlayOffsetUri;
+  offset?: PositionObject | UriObject;
   /** Indicates from what position to start playback. Must be a positive number.
    * Passing in a position that is greater than the length of the track will
    * cause the player to start playing the next song. */
@@ -153,13 +142,7 @@ export interface ShuffleParameters extends DeviceIdOption {
 
 export type ShuffleResponse = Promise<Response<void>>;
 
-export interface TransferPlaybackParameters {
-  /** A JSON array containing the ID of the device on which playback
-   * should be started/transferred. For example:{device_ids:["74ASZWbe4lXaubB36ztrGX"]}
-   * Note: Although an array is accepted, only a single device_id
-   * is currently supported. Supplying more than one will return
-   * 400 Bad Request */
-  device_ids: string[];
+export interface TransferPlaybackParameters extends DeviceIdsObject {
   /** true: ensure playback happens on new device.
    * false or not provided: keep the current playback state. */
   play?: boolean;

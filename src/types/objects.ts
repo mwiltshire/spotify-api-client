@@ -812,3 +812,95 @@ export interface NullableSimplifiedShows {
 export interface NullableAudioFeatures {
   audio_features: Array<SimplifiedShowObject | null>;
 }
+
+export interface IdObject {
+  id: string;
+}
+
+export interface IdsObject {
+  ids: string[];
+}
+
+export interface CategoryIdObject {
+  category_id: string;
+}
+
+export interface PagingCategoriesObject {
+  categories: PagingObject<CategoryObject>;
+}
+
+export interface MessageObject {
+  message: string;
+}
+
+export interface PagingSimplifiedAlbumsObject {
+  albums: PagingObject<SimplifiedAlbumObject>;
+}
+
+export interface PagingArtistsObject {
+  artists: PagingObject<ArtistObject>;
+}
+
+export interface PagingTracksObject {
+  tracks: PagingObject<TrackObject>;
+}
+
+export interface PagingSimplifiedShowsObject {
+  shows: PagingObject<SimplifiedShowObject>;
+}
+
+export interface PagingSimplifiedEpisodesObject {
+  episodes: PagingObject<SimplifiedEpisodeObject>;
+}
+
+export interface PagingSimplifiedPlaylistsObject {
+  playlists: PagingObject<SimplifiedPlaylistObject>;
+}
+
+export interface GenresObject {
+  genres: string[];
+}
+
+export interface PlaylistIdObject {
+  playlist_id: string;
+}
+
+export interface CursorBasedPagingArtistsObject {
+  artists: CursorBasedPagingObject<ArtistObject>;
+}
+
+export interface DevicesObject {
+  devices: DeviceObject[];
+}
+
+export interface SnapshotIdObject {
+  snapshot_id: string;
+}
+
+export interface UserIdObject {
+  user_id: string;
+}
+
+export interface UriObject {
+  uri: string;
+}
+
+export interface UrisObject {
+  uris: string[];
+}
+
+export interface DeviceIdObject {
+  device_id: string;
+}
+
+export interface DeviceIdsObject {
+  device_ids: string[];
+}
+
+export interface PositionObject {
+  position: number;
+}
+
+export interface PositionsObject {
+  positions: number[];
+}
