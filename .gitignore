@@ -1,3 +1,23 @@
 node_modules
 dist
 coverage
+
+# Packages
+/albums
+/artists
+/auth
+/browse
+/episodes
+/fetcher
+/follow
+/library
+/middleware
+/personalization
+/player
+/playlists
+/search
+/shows
+/tracks
+/user
+
+/examples
