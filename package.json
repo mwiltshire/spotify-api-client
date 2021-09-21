@@ -27,12 +27,13 @@
     "node": ">=14"
   },
   "scripts": {
-    "pre-build": "rimraf dist && cp -R packages/* .",
+    "prebuild": "rimraf dist && cp -R packages/* .",
     "build": "yarn build:esm && yarn build:cjs",
     "build:esm": "tsc -p ./tsconfig.build.json --module es2015 --outDir dist/esm",
     "build:cjs": "tsc -p ./tsconfig.build.json --module commonjs --outDir dist/cjs",
     "format": "prettier --write \"src/**/*.{ts,js}\"",
     "lint": "eslint \"src/**/*.{ts,js}\"",
+    "type-check": "tsc -p ./tsconfig.json --noEmit",
     "test": "jest",
     "test:watch": "yarn test --watch",
     "test:coverage": "yarn test --coverage",
