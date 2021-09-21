@@ -88,7 +88,7 @@ describe('getTopTracksForArtist', () => {
       },
       url: 'https://api.spotify.com/v1/artists/0OdUWJ0sBjDrqHygGUXeCF/top-tracks',
       params: {
-        country: 'US'
+        market: 'US'
       },
       scheme: 'Bearer'
     });
