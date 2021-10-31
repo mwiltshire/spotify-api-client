@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [14, 16]
+    steps:
+      - name: 👩‍💻 Check out repo
+        uses: actions/checkout@v2
+
+      - name: 🧰 Set up Node
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: ⬇️ Install deps
+        run: yarn install --pure-lockfile
+
+      - name: 🛠 Run build
+        run: yarn run build
+
+      - name: 🚀 Release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

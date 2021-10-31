@@ -1,0 +1,30 @@
+name: Verify
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 👩‍💻 Check out repo
+        uses: actions/checkout@v2
+
+      - name: 🧰 Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: ⬇️ Install deps
+        run: yarn install
+
+      - name: 📗 Lint
+        run: yarn lint
+
+      - name: 🔎 Type check
+        run: yarn type-check
+
+      - name: ✔ Run tests
+        run: yarn test
