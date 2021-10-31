@@ -1,7 +1,7 @@
 {
-  "name": "spotify-api-client",
-  "version": "1.0.0",
-  "description": "",
+  "name": "spotify-web-api",
+  "version": "0.0.0-semantically-released",
+  "description": "Universal client for the SPotify web API.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
@@ -38,12 +38,12 @@
     "test:watch": "yarn test --watch",
     "test:coverage": "yarn test --coverage",
     "prepare": "husky install",
-    "pre-commit": "npm-run-all --parallel lint format",
-    "pre-push": "npm test"
+    "pre-commit": "npm-run-all --parallel lint format type-check",
+    "pre-push": "yarn test"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@typescript-eslint/eslint-plugin": "^4.29.1",
