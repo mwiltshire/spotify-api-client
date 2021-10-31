@@ -53,9 +53,9 @@ function getError(body: Record<string, any>, response: SpotifyResponse) {
     });
   }
 
-  // Some other unhandled/unkown error most likely not
-  // originating from Spotify.
-  return new Error('[spotify api client] unknown error');
+  return new Error(
+    `Unknown Error: Request to ${response.request.url} failed with status ${response.status}`
+  );
 }
 
 export async function fetcher(
