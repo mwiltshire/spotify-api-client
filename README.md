@@ -1,8 +1,10 @@
-# spotify-api-client
+# spotify-web-api
 
-This API client for Spotify aims to be flexible enough to be either as minimal or full-fledged as you need.
+**Universal client for the Spotify web API.**
 
-Each endpoint can be called with a simple function, and you're not tied into any http library under the hood. Consumers of the library can use the default `Fetch`-based http client (or 'fetcher') and polyfill as needed. Alternatively, you create your own based on based on your library of choice.
+❗️❗️ **DISCLAIMER:** This was written to solve a particular need I had. It might not end up getting actively maintained!
+
+This client aims to be flexible enough to be either as minimal or full-fledged as you need. Each endpoint can be called with a simple function, and you're not tied into any http library under the hood. Consumers of the library can use the default `Fetch`-based http client (or 'fetcher') and polyfill as needed. Alternatively, you create your own based on based on your library of choice.
 
 Middleware gives you the possibility to perform some actions before each request is made to the Spotify API, such as logging. This is also the primary way that authentication is added to each request. Create an auth middleware via the supplied helpers and pass this to `createClient`, and the necessary headers will be added automatically to each request.
 
@@ -10,6 +12,7 @@ Having 'fetchers' passed in from the outside allows for a whole lot of flexibili
 
 ## Contents
 
+- [Installation](#installation)
 - [Creating a client](#creating-a-client)
 - [Adding middleware](#adding-middleware)
   - [Chaining middleware](#chaining-middleware)
@@ -22,6 +25,20 @@ Having 'fetchers' passed in from the outside allows for a whole lot of flexibili
 - [Error handling](#error-handling)
 - [Examples](#examples)
 - [API Reference](#api-reference)
+
+## Installation
+
+With `yarn`
+
+```bash
+yarn add spotify-web-api
+```
+
+With `npm`
+
+```bash
+`npm i spotify-web-api`
+```
 
 ## Creating a client
 
@@ -42,7 +59,7 @@ This above example doesn't do very much yet - it'll make a network request, but 
 
 Middleware lets you perform actions just before and just after each request to the Spotify API. This is a useful place to do things like logging, error reporting, applying timeouts, etc. It's also the out-of-the-box way to add authentication to your requests. [Read more about auth middleware](#auth-middleware)
 
-If you know Redux middleware, then this will look very familiar to you.
+If this looks familiar at all, it's because I totally ripped the API from Redux.
 
 ```js
 function loggerMiddleware(next: MiddlewareFetcher) {
@@ -496,7 +513,7 @@ TODO!
 
 ## Examples
 
-Example code for a range of scenarios can be found in the [`examples`](examples) directory.
+TODO!
 
 ## API Reference
 
@@ -623,7 +640,8 @@ Once created, the client can be passed as the first argument to any endpoint fun
 
 🗒 **Note:** This library deliberately **does not** polyfill `fetch`. If you want to use the default fetcher in a Node env, for example, then you will need to polyfill this yourself.
 
-**Example**
+<details>
+<summary><strong>Example</strong></summary>
 
 ```js
 import { createClient, Fetcher, RequestConfig } from 'spotify-api-client';
@@ -654,6 +672,8 @@ getAlbum(client, { id: '0sNOF9WDwhWunNAHPD3Baj' }).then(({ body: album }) =>
 );
 ```
 
+</details>
+
 ### `composeMiddleware`
 
 Composes multiple middleware functions together to be passed as the second argument to `createClient`.
@@ -664,7 +684,8 @@ Composes multiple middleware functions together to be passed as the second argum
 
 Middleware functions are composed right-to-left.
 
-**Example**
+<details>
+<summary><strong>Example</strong></summary>
 
 ```js
 import { createClient, Fetcher, RequestConfig } from 'spotify-api-client';
@@ -692,6 +713,8 @@ const middleware = composeMiddleware(addAuth, addLogging)
 const client = createClient(fetcher, middleware;
 ```
 
+</details>
+
 ### `createAuthMiddleware`
 
 Composes [`createBasicAuthMiddleware`](#createbasicauthmiddleware) and [`createBearerAuthMiddleware`](#createbearerauthmiddleware) together into a single middleware function.
@@ -703,7 +726,8 @@ Composes [`createBasicAuthMiddleware`](#createbasicauthmiddleware) and [`createB
   - `client_id` _string_ - Spotify client ID.
   - `client_secret` _string_ - Spotify client secret.
 
-**Example**
+<details>
+<summary><strong>Example</strong></summary>
 
 ```js
 import { createClient } from 'spotify-api-client';
@@ -711,18 +735,20 @@ import { fetcher } from 'spotify-api-client/fetcher';
 import { createAuthMiddleware } from 'spotify-api-client/middleware';
 
 const addAuth = createAuthMiddleware({
-  token: '<TOKEN>',
   /**
    * This could also be an async or sync function that returns
    * a string:
-  token: () => fetchAccessTokenFromSomewhere(),
-  */
+   * token: () => fetchAccessTokenFromSomewhere(),
+   */
+  token: '<TOKEN>',
   client_id: '<CLIENT_ID>',
   redirect_uri: '<REDIRECT_URI>'
 });
 
 const client = createClient(fetcher, addAuth);
 ```
+
+</details>
 
 ### `createBasicAuthMiddleware`
 
@@ -734,7 +760,8 @@ Create a middleware function that will add a `Basic` authorization header to the
   - `client_id` _string_ - Spotify client ID.
   - `client_secret` _string_ - Spotify client secret.
 
-**Example**
+<details>
+<summary><strong>Example</strong></summary>
 
 ```js
 import { createClient } from 'spotify-api-client';
@@ -749,6 +776,8 @@ const addBasicAuth = createBasicAuthMiddleware({
 const client = createClient(fetcher, addBasicAuth);
 ```
 
+</details>
+
 ### `createBearerAuthMiddleware`
 
 Create a middleware function that will add a `Bearer` authorization header to the correct requests.
@@ -756,10 +785,10 @@ Create a middleware function that will add a `Bearer` authorization header to th
 `createBasicAuthMiddleware(config: BearerAuthMiddlewareConfig): Middleware`
 
 - `config`
-
   - `token` _string_ | _Function_ - Spotify access token or a function that returns an access token as a string (can be async).
 
-**Example**
+<details>
+<summary><strong>Example</strong></summary>
 
 ```js
 import { createClient } from 'spotify-api-client';
@@ -777,6 +806,8 @@ const addBearerAuth = createBearerAuthMiddleware({
 
 const client = createClient(fetcher, addBearerAuth);
 ```
+
+</details>
 
 ### `paginate`
 
@@ -798,7 +829,8 @@ Spotify endpoints that support pagination allow you to pass an optional `limit` 
 
 If you pass any other optional parameters to the endpoint function - for example, some take a `market` field - these will also be included in each subsequent page request.
 
-**Example**
+<details>
+<summary><strong>Example</strong></summary>
 
 ```js
 import { createClient } from 'spotify-api-client';
@@ -841,6 +873,8 @@ async function gatherSavedAlbumNamesMax3Requests() {
 }
 ```
 
+</details>
+
 ### `gather`
 
 Gather all results from paginating requests into an array. This is a shorthand for the examples above using `paginate`.
@@ -854,7 +888,8 @@ Gather all results from paginating requests into an array. This is a shorthand f
   - `maxItems?` _number_ - The maximum number of items to fetch. Defaults to Infinity.
   - `maxRequests?` _number_ - The maximum number of requests to be made. This will take precedence over `maxItems` if both values are supplied. Defaults to Infinity.
 
-**Example**
+<details>
+<summary><strong>Example</strong></summary>
 
 ```js
 import { createClient } from 'spotify-api-client';
@@ -876,6 +911,8 @@ async function gatherSavedAlbumNames(): Promise<string[]> {
   return albums;
 }
 ```
+
+</details>
 
 ### `albums`
 
@@ -1472,6 +1509,8 @@ import { refreshAccessToken } from 'spotify-api-client/auth';
 })();
 ```
 
+</details>
+
 ### `browse`
 
 #### `getCategory`
@@ -2054,6 +2093,8 @@ import { getFollowedArtists } from 'spotify-api-client/follow';
   );
 })();
 ```
+
+</details>
 
 #### `isFollowingArtists`
 
@@ -3370,6 +3411,8 @@ import { transferPlayback } from 'spotify-api-client/player';
 })();
 ```
 
+</details>
+
 ### `playlists`
 
 #### `addItemsToPlaylist`
@@ -3865,6 +3908,8 @@ import { uploadCoverImageForPlaylist } from 'spotify-api-client/playlists';
   });
 })();
 ```
+
+</details>
 
 ### `search`
 
