@@ -8,9 +8,6 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [14, 16]
     steps:
       - name: 👩‍💻 Check out repo
         uses: actions/checkout@v2
@@ -18,7 +15,7 @@ jobs:
       - name: 🧰 Set up Node
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 16
 
       - name: ⬇️ Install deps
         run: yarn install --pure-lockfile
