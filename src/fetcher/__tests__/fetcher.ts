@@ -164,7 +164,9 @@ describe('fetcher', () => {
       });
     } catch (error) {
       expect(error.name).toBe('Error');
-      expect(error.message).toBe('[spotify api client] unknown error');
+      expect(error.message).toBe(
+        'Unknown Error: Request to https://api.test.com/test failed with status 400'
+      );
     }
   });
 
