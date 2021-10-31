@@ -1,5 +1,5 @@
 {
-  "name": "spotify-api-client/auth",
+  "name": "spotify-web-api-client/auth",
   "private": true,
   "main": "../dist/cjs/auth/index.js",
   "module": "../dist/esm/auth/index.js"

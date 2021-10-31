@@ -1,7 +1,7 @@
 {
-  "name": "spotify-web-api",
+  "name": "spotify-web-api-client",
   "version": "0.0.0-semantically-released",
-  "description": "Universal client for the SPotify web API.",
+  "description": "Universal client for the Spotify web API.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "files": [
@@ -41,7 +41,7 @@
     "pre-commit": "npm-run-all --parallel lint format type-check",
     "pre-push": "yarn test"
   },
-  "keywords": [],
+  "keywords": ["spotify web api", "spotify", "spotify client"],
   "author": "",
   "license": "MIT",
   "devDependencies": {
@@ -58,5 +58,10 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^27.0.4",
     "typescript": "^4.3.5"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mwiltshire/spotify-web-api-client"
+  },
+  "homepage": "https://github.com/mwiltshire/spotify-web-api-client#readme"
 }

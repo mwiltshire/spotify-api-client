@@ -1,4 +1,4 @@
-# spotify-web-api
+# spotify-web-api-client
 
 **Universal client for the Spotify web API.**
 
@@ -31,13 +31,13 @@ Having 'fetchers' passed in from the outside allows for a whole lot of flexibili
 With `yarn`
 
 ```bash
-yarn add spotify-web-api
+yarn add spotify-web-api-client
 ```
 
 With `npm`
 
 ```bash
-`npm i spotify-web-api`
+npm i spotify-web-api-client
 ```
 
 ## Creating a client
@@ -47,8 +47,8 @@ Create a client using the `createClient` function. This should subsequently be p
 The `client` is nothing special. It's just a function that takes a `RequestConfig` object as an argument and passes that through the middleware chain and returns the response.
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
 
 const client = createClient(fetcher);
 ```
@@ -79,12 +79,12 @@ A middleware function takes the `next` middleware as its argument and returns a 
 `composeMiddleware` takes any number of middleware functions and composes them together using `reduceRight` under the hood.
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
 import {
   createAuthMiddleware,
   composeMiddleware
-} from 'spotify-api-client/middleware';
+} from 'spotify-web-api-client/middleware';
 
 const authMiddleware = createAuthMiddleware({
   token: () => getTokenFromSomewhere(),
@@ -130,13 +130,13 @@ const client = createClient(fetcher, middleware);
 Middleware is the default way of adding authentication to your requests, and the library comes with a few helpers to do this: [`createAuthMiddleware`](#createAuthMiddleware), [`createBasicAuthMiddleware`](#createBasicAuthMiddleware) and [`createBearerAuthMiddleware`](#createBearerAuthMiddleware).
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
 import {
   createAuthMiddleware,
   createBasicAuthMiddleware,
   createBearerAuthMiddleware
-} from 'spotify-api-client/middleware';
+} from 'spotify-web-api-client/middleware';
 
 const addAuth = createAuthMiddleware({
   token: 'TOKEN',
@@ -174,7 +174,7 @@ Read the Spotify docs on authentication flows.
 1. Direct the user to Spotify to authorize your application.
 
 ```js
-import { createAuthorizationCodeUrl } from 'spotify-api-client/auth';
+import { createAuthorizationCodeUrl } from 'spotify-web-api-client/auth';
 import { app } from './app';
 
 // Imagine app is some Express application you have running.
@@ -194,10 +194,10 @@ app.get('/login', (_, res) => {
 
 ```js
 import { app } from './app';
-import { createClient } from 'spotify-api-client';
-import { createBasicAuthMiddleware } from 'spotify-api-client/middleware';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { authorizationCode } from 'spotify-api-client/auth';
+import { createClient } from 'spotify-web-api-client';
+import { createBasicAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { authorizationCode } from 'spotify-web-api-client/auth';
 
 const addBasicAuth = createBasicAuthMiddleware({
   client_id: '<CLIENT_ID>',
@@ -233,10 +233,10 @@ app.get('/callback', (req, res, next) => {
 3. Add authentication to your requests to the Spotify API
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { play } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { play } from 'spotify-web-api-client/player';
 
 const addBearerAuth = createBearerAuthMiddleware({
   token: '<TOKEN>'
@@ -260,7 +260,7 @@ Read the [Spotify docs for this flow](<(https://developer.spotify.com/documentat
 1. Direct the user to Spotify to authorize your application.
 
 ```js
-import { createAuthorizationCodeWithPkceUrl } from 'spotify-api-client/auth';
+import { createAuthorizationCodeWithPkceUrl } from 'spotify-web-api-client/auth';
 import { app } from './app';
 
 // Imagine app is some Express application you have running.
@@ -281,9 +281,9 @@ app.get('/login', (_, res) => {
 
 ```js
 import { app } from './app';
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { authorizationCodeFlow } from 'spotify-api-client/auth';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { authorizationCodeFlow } from 'spotify-web-api-client/auth';
 
 // Note: No auth middleware is technically required for
 // the PKCE flow, but a new client would need to be created
@@ -319,10 +319,10 @@ app.get('/callback', async (req, res, next) => {
 3. Add authentication to your requests to the Spotify API
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { play } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { play } from 'spotify-web-api-client/player';
 
 const addAuth = createBearerAuthMiddleware({
   token: '<TOKEN>'
@@ -342,7 +342,7 @@ Read the [Spotify docs for this flow](https://developer.spotify.com/documentatio
 1. Direct the user to Spotify to authorize your application.
 
 ```js
-import { createImplicitGrantUrl } from 'spotify-api-client/auth';
+import { createImplicitGrantUrl } from 'spotify-web-api-client/auth';
 
 function login() {
   const authUrl = createImplicitGrantUrl({
@@ -385,10 +385,10 @@ function getAccessTokenFromURL() {
 3. Add authentication to your requests to the Spotify API
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { play } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { play } from 'spotify-web-api-client/player';
 
 const addAuth = createBearerAuthMiddleware({
   token: '<TOKEN>'
@@ -408,9 +408,9 @@ Read the [Spotify docs for this flow](https://developer.spotify.com/documentatio
 1. Request an access token from the Spotify accounts service
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBasicAuthMiddleware } from 'spotify-api-client/middleware';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBasicAuthMiddleware } from 'spotify-web-api-client/middleware';
 
 const addAuth = createBasicAuthMiddleware({
   client_id: '<CLIENT_ID>',
@@ -437,10 +437,10 @@ authenticate();
 2. Add authentication to your requests to the Spotify API
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { play } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { play } from 'spotify-web-api-client/player';
 
 const addAuth = createBearerAuthMiddleware({
   token: () => getTokenSavedEarlier()
@@ -455,7 +455,7 @@ async () => {
 
 ## Creating a custom fetcher
 
-A default `Fetch`-based fetcher can be imported from `spotify-api-client/fetcher`, but it's pretty simple to create your own if you prefer to use another HTTP library.
+A default `Fetch`-based fetcher can be imported from `spotify-web-api-client/fetcher`, but it's pretty simple to create your own if you prefer to use another HTTP library.
 
 The role of a fetcher is to take the `RequestConfig` object, execute the request to Spotify and return a promise that resolves with a `Response` object.
 
@@ -644,13 +644,13 @@ Once created, the client can be passed as the first argument to any endpoint fun
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient, Fetcher, RequestConfig } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
+import { createClient, Fetcher, RequestConfig } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
 import {
   createAuthMiddleware,
   composeMiddleware
-} from 'spotify-api-client/middleware';
-import { getAlbum } from 'spotify-api-client/albums';
+} from 'spotify-web-api-client/middleware';
+import { getAlbum } from 'spotify-web-api-client/albums';
 
 const addAuth = createAuthMiddleware({
   token: '<TOKEN>',
@@ -688,12 +688,12 @@ Middleware functions are composed right-to-left.
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient, Fetcher, RequestConfig } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
+import { createClient, Fetcher, RequestConfig } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
 import {
   createAuthMiddleware,
   composeMiddleware
-} from 'spotify-api-client/middleware';
+} from 'spotify-web-api-client/middleware';
 
 const addAuth = createAuthMiddleware({
   token: '<TOKEN>',
@@ -730,9 +730,9 @@ Composes [`createBasicAuthMiddleware`](#createbasicauthmiddleware) and [`createB
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createAuthMiddleware } from 'spotify-api-client/middleware';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createAuthMiddleware } from 'spotify-web-api-client/middleware';
 
 const addAuth = createAuthMiddleware({
   /**
@@ -764,9 +764,9 @@ Create a middleware function that will add a `Basic` authorization header to the
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBasicAuthMiddleware } from 'spotify-api-client/middleware';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBasicAuthMiddleware } from 'spotify-web-api-client/middleware';
 
 const addBasicAuth = createBasicAuthMiddleware({
   client_id: '<CLIENT_ID>',
@@ -791,9 +791,9 @@ Create a middleware function that will add a `Bearer` authorization header to th
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
 
 const addBearerAuth = createBearerAuthMiddleware({
   token: '<TOKEN>'
@@ -833,11 +833,11 @@ If you pass any other optional parameters to the endpoint function - for example
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { paginate } from 'spotify-api-client/pagination';
-import { getSavedAlbums } from 'spotify-api-client/library';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { paginate } from 'spotify-web-api-client/pagination';
+import { getSavedAlbums } from 'spotify-web-api-client/library';
 
 const addBearerAuth = createBearerAuthMiddleware({
   token: '<TOKEN>'
@@ -892,11 +892,11 @@ Gather all results from paginating requests into an array. This is a shorthand f
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { gather } from 'spotify-api-client/pagination';
-import { getSavedAlbums } from 'spotify-api-client/library';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { gather } from 'spotify-web-api-client/pagination';
+import { getSavedAlbums } from 'spotify-web-api-client/library';
 
 const addBearerAuth = createBearerAuthMiddleware({
   token: '<TOKEN>'
@@ -939,10 +939,10 @@ umResponse`
 
 ```js
 (async () => {
-  import { createClient } from 'spotify-api-client';
-  import { fetcher } from 'spotify-api-client/fetcher';
-  import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-  import { getAlbum } from 'spotify-api-client/albums';
+  import { createClient } from 'spotify-web-api-client';
+  import { fetcher } from 'spotify-web-api-client/fetcher';
+  import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+  import { getAlbum } from 'spotify-web-api-client/albums';
 
   const client = createClient(
     fetcher,
@@ -978,10 +978,10 @@ umsResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getAlbums } from 'spotify-api-client/albums';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getAlbums } from 'spotify-web-api-client/albums';
 
 (async () => {
   const client = createClient(
@@ -1031,10 +1031,10 @@ cksForAlbumResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getTracksForAlbum } from 'spotify-api-client/albums';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getTracksForAlbum } from 'spotify-web-api-client/albums';
 
 (async () => {
   const client = createClient(
@@ -1078,10 +1078,10 @@ umsForArtistResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getAlbumsForArtist } from 'spotify-api-client/artists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getAlbumsForArtist } from 'spotify-web-api-client/artists';
 
 (async () => {
   const client = createClient(
@@ -1117,10 +1117,10 @@ istResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getArtist } from 'spotify-api-client/artists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getArtist } from 'spotify-web-api-client/artists';
 
 (async () => {
   const client = createClient(
@@ -1155,10 +1155,10 @@ istsResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getArtists } from 'spotify-api-client/artists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getArtists } from 'spotify-web-api-client/artists';
 
 (async () => {
   const client = createClient(
@@ -1201,10 +1201,10 @@ TracksForArtistResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getTopTracksForArtist } from 'spotify-api-client/artists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getTopTracksForArtist } from 'spotify-web-api-client/artists';
 
 (async () => {
   const client = createClient(
@@ -1241,10 +1241,10 @@ atedArtistsForArtistResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getRelatedArtistsForArtist } from 'spotify-api-client/artists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getRelatedArtistsForArtist } from 'spotify-web-api-client/artists';
 
 (async () => {
   const client = createClient(
@@ -1280,10 +1280,10 @@ Exchange a Spotify authorization code for an access token.
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBasicAuthMiddleware } from 'spotify-api-client/middleware';
-import { authorizationCode } from 'spotify-api-client/auth';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBasicAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { authorizationCode } from 'spotify-web-api-client/auth';
 
 (async () => {
   const addAuth = createBasicAuthMiddleware({
@@ -1321,10 +1321,10 @@ Exchange a Spotify authorization code for an access token.
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBasicAuthMiddleware } from 'spotify-api-client/middleware';
-import { authorizationCodeWithPkce } from 'spotify-api-client/auth';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBasicAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { authorizationCodeWithPkce } from 'spotify-web-api-client/auth';
 
 (async () => {
   const addAuth = createBasicAuthMiddleware({
@@ -1359,10 +1359,10 @@ Obtain an access token using your client ID and client secret.
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBasicAuthMiddleware } from 'spotify-api-client/middleware';
-import { clientCredentials } from 'spotify-api-client/auth';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBasicAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { clientCredentials } from 'spotify-web-api-client/auth';
 
 (async () => {
   const addAuth = createBasicAuthMiddleware({
@@ -1398,7 +1398,7 @@ Create the authorization URL to redirect users to as part of the implicit grant 
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createImplicitGrantUrl } from 'spotify-api-client/auth';
+import { createImplicitGrantUrl } from 'spotify-web-api-client/auth';
 
 const url = createImplicitGrantUrl({
   scope: ['user-follow-modify', 'user-read-currently-playing'],
@@ -1429,7 +1429,7 @@ Create the authorization URL to redirect users to as part of the authorization c
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createAuthorizationCodeUrl } from 'spotify-api-client/auth';
+import { createAuthorizationCodeUrl } from 'spotify-web-api-client/auth';
 
 const url = createAuthorizationCodeUrl({
   scope: ['user-follow-modify', 'user-read-currently-playing'],
@@ -1460,7 +1460,7 @@ Create the authorization URL to redirect users to as part of the authorization c
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createAuthorizationCodeWithPkceUrl } from 'spotify-api-client/auth';
+import { createAuthorizationCodeWithPkceUrl } from 'spotify-web-api-client/auth';
 
 const url = createAuthorizationCodeWithPkceUrl({
   scope: ['user-follow-modify', 'user-read-currently-playing'],
@@ -1488,10 +1488,10 @@ Obtain a new access token using your refresh token.
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBasicAuthMiddleware } from 'spotify-api-client/middleware';
-import { refreshAccessToken } from 'spotify-api-client/auth';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBasicAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { refreshAccessToken } from 'spotify-web-api-client/auth';
 
 (async () => {
   const addAuth = createBasicAuthMiddleware({
@@ -1532,10 +1532,10 @@ egoryResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getCategory } from 'spotify-api-client/browse';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getCategory } from 'spotify-web-api-client/browse';
 
 (async () => {
   const client = createClient(
@@ -1574,10 +1574,10 @@ egoriesResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getCategories } from 'spotify-api-client/browse';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getCategories } from 'spotify-web-api-client/browse';
 
 (async () => {
   const client = createClient(
@@ -1618,10 +1618,10 @@ turedPlaylistsResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getFeaturedPlaylists } from 'spotify-api-client/browse';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getFeaturedPlaylists } from 'spotify-web-api-client/browse';
 
 (async () => {
   const client = createClient(
@@ -1661,10 +1661,10 @@ ReleasesResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getNewReleases } from 'spotify-api-client/browse';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getNewReleases } from 'spotify-web-api-client/browse';
 
 (async () => {
   const client = createClient(
@@ -1703,10 +1703,10 @@ ylistsForCategoryResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getPlaylistsForCategory } from 'spotify-api-client/browse';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getPlaylistsForCategory } from 'spotify-web-api-client/browse';
 
 (async () => {
   const client = createClient(
@@ -1749,10 +1749,10 @@ ommendationsResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getRecommendations } from 'spotify-api-client/browse';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getRecommendations } from 'spotify-web-api-client/browse';
 
 (async () => {
   const client = createClient(
@@ -1792,10 +1792,10 @@ ommendationGenresResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getRecommendationGenres } from 'spotify-api-client/browse';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getRecommendationGenres } from 'spotify-web-api-client/browse';
 
 (async () => {
   const client = createClient(
@@ -1831,10 +1831,10 @@ sodeResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getEpisode } from 'spotify-api-client/episodes';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getEpisode } from 'spotify-web-api-client/episodes';
 
 (async () => {
   const client = createClient(
@@ -1871,10 +1871,10 @@ sodesResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getEpisodes } from 'spotify-api-client/episodes';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getEpisodes } from 'spotify-web-api-client/episodes';
 
 (async () => {
   const client = createClient(
@@ -1920,10 +1920,10 @@ lowingPlaylistResponse` sodesResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { areFollowingPlaylist } from 'spotify-api-client/follow';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { areFollowingPlaylist } from 'spotify-web-api-client/follow';
 
 (async () => {
   const client = createClient(
@@ -1967,10 +1967,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { followArtists } from 'spotify-api-client/follow';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { followArtists } from 'spotify-web-api-client/follow';
 
 (async () => {
   const client = createClient(
@@ -2003,10 +2003,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { followPlaylist } from 'spotify-api-client/follow';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { followPlaylist } from 'spotify-web-api-client/follow';
 
 (async () => {
   const client = createClient(
@@ -2038,10 +2038,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { followUsers } from 'spotify-api-client/follow';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { followUsers } from 'spotify-web-api-client/follow';
 
 (async () => {
   const client = createClient(
@@ -2075,10 +2075,10 @@ lowedArtistsResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getFollowedArtists } from 'spotify-api-client/follow';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getFollowedArtists } from 'spotify-web-api-client/follow';
 
 (async () => {
   const client = createClient(
@@ -2113,10 +2113,10 @@ owingArtistsOrUsersResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { isFollowingArtists } from 'spotify-api-client/follow';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { isFollowingArtists } from 'spotify-web-api-client/follow';
 
 (async () => {
   const client = createClient(
@@ -2158,10 +2158,10 @@ owingArtistsOrUsersResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { isFollowingUsers } from 'spotify-api-client/follow';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { isFollowingUsers } from 'spotify-web-api-client/follow';
 
 (async () => {
   const client = createClient(
@@ -2202,10 +2202,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { unfollowArtists } from 'spotify-api-client/follow';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { unfollowArtists } from 'spotify-web-api-client/follow';
 
 (async () => {
   const client = createClient(
@@ -2237,10 +2237,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { unfollowPlaylist } from 'spotify-api-client/follow';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { unfollowPlaylist } from 'spotify-web-api-client/follow';
 
 (async () => {
   const client = createClient(
@@ -2272,10 +2272,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { unfollowUsers } from 'spotify-api-client/follow';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { unfollowUsers } from 'spotify-web-api-client/follow';
 
 (async () => {
   const client = createClient(
@@ -2311,10 +2311,10 @@ ibraryResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { checkSavedAlbums } from 'spotify-api-client/library';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { checkSavedAlbums } from 'spotify-web-api-client/library';
 
 (async () => {
   const client = createClient(
@@ -2356,10 +2356,10 @@ ibraryResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { checkSavedShows } from 'spotify-api-client/library';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { checkSavedShows } from 'spotify-web-api-client/library';
 
 (async () => {
   const client = createClient(
@@ -2401,10 +2401,10 @@ ibraryResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { checkSavedTracks } from 'spotify-api-client/library';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { checkSavedTracks } from 'spotify-web-api-client/library';
 
 (async () => {
   const client = createClient(
@@ -2448,10 +2448,10 @@ edAlbumsResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getSavedAlbums } from 'spotify-api-client/library';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getSavedAlbums } from 'spotify-web-api-client/library';
 
 (async () => {
   const client = createClient(
@@ -2485,10 +2485,10 @@ edShowsResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getSavedShows } from 'spotify-api-client/library';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getSavedShows } from 'spotify-web-api-client/library';
 
 (async () => {
   const client = createClient(
@@ -2523,10 +2523,10 @@ edTracksResponse`
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getSavedTracks } from 'spotify-api-client/library';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getSavedTracks } from 'spotify-web-api-client/library';
 
 (async () => {
   const client = createClient(
@@ -2560,10 +2560,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { removeSavedAlbums } from 'spotify-api-client/library';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { removeSavedAlbums } from 'spotify-web-api-client/library';
 
 (async () => {
   const client = createClient(
@@ -2598,10 +2598,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { removeSavedShows } from 'spotify-api-client/library';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { removeSavedShows } from 'spotify-web-api-client/library';
 
 (async () => {
   const client = createClient(
@@ -2635,10 +2635,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { removeSavedTracks } from 'spotify-api-client/library';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { removeSavedTracks } from 'spotify-web-api-client/library';
 
 (async () => {
   const client = createClient(
@@ -2670,10 +2670,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { saveAlbums } from 'spotify-api-client/library';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { saveAlbums } from 'spotify-web-api-client/library';
 
 (async () => {
   const client = createClient(
@@ -2705,10 +2705,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { saveShows } from 'spotify-api-client/library';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { saveShows } from 'spotify-web-api-client/library';
 
 (async () => {
   const client = createClient(
@@ -2740,10 +2740,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { saveTracks } from 'spotify-api-client/library';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { saveTracks } from 'spotify-web-api-client/library';
 
 (async () => {
   const client = createClient(
@@ -2781,10 +2781,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getMyTopArtists } from 'spotify-api-client/personalization';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getMyTopArtists } from 'spotify-web-api-client/personalization';
 
 (async () => {
   const client = createClient(
@@ -2821,10 +2821,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getMyTopTracks } from 'spotify-api-client/personalization';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getMyTopTracks } from 'spotify-web-api-client/personalization';
 
 (async () => {
   const client = createClient(
@@ -2863,10 +2863,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { addToPlaybackQueue } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { addToPlaybackQueue } from 'spotify-web-api-client/player';
 
 (async () => {
   const client = createClient(
@@ -2898,10 +2898,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getAvailableDevices } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getAvailableDevices } from 'spotify-web-api-client/player';
 
 (async () => {
   const client = createClient(
@@ -2934,10 +2934,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getCurrentPlaybackContext } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getCurrentPlaybackContext } from 'spotify-web-api-client/player';
 
 (async () => {
   const client = createClient(
@@ -2972,10 +2972,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getCurrentlyPlayingTrack } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getCurrentlyPlayingTrack } from 'spotify-web-api-client/player';
 
 (async () => {
   const client = createClient(
@@ -3011,10 +3011,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getRecentlyPlayedTracks } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getRecentlyPlayedTracks } from 'spotify-web-api-client/player';
 
 (async () => {
   const client = createClient(
@@ -3051,10 +3051,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { pause } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { pause } from 'spotify-web-api-client/player';
 
 (async () => {
   const client = createClient(
@@ -3099,10 +3099,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { play } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { play } from 'spotify-web-api-client/player';
 
 (async () => {
   const client = createClient(
@@ -3163,10 +3163,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { repeat } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { repeat } from 'spotify-web-api-client/player';
 
 (async () => {
   const client = createClient(
@@ -3201,10 +3201,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { seek } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { seek } from 'spotify-web-api-client/player';
 
 (async () => {
   const client = createClient(
@@ -3241,10 +3241,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { setVolume } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { setVolume } from 'spotify-web-api-client/player';
 
 (async () => {
   const client = createClient(
@@ -3281,10 +3281,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { shuffle } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { shuffle } from 'spotify-web-api-client/player';
 
 (async () => {
   const client = createClient(
@@ -3318,10 +3318,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { skipToNextTrack } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { skipToNextTrack } from 'spotify-web-api-client/player';
 
 (async () => {
   const client = createClient(
@@ -3355,10 +3355,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { skipToPreviousTrack } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { skipToPreviousTrack } from 'spotify-web-api-client/player';
 
 (async () => {
   const client = createClient(
@@ -3391,10 +3391,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { transferPlayback } from 'spotify-api-client/player';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { transferPlayback } from 'spotify-web-api-client/player';
 
 (async () => {
   const client = createClient(
@@ -3433,10 +3433,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { addItemsToPlaylist } from 'spotify-api-client/playlists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { addItemsToPlaylist } from 'spotify-web-api-client/playlists';
 
 (async () => {
   const client = createClient(
@@ -3480,10 +3480,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { changeDetailsForPlaylist } from 'spotify-api-client/playlists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { changeDetailsForPlaylist } from 'spotify-web-api-client/playlists';
 
 (async () => {
   const client = createClient(
@@ -3522,10 +3522,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { createPlaylist } from 'spotify-api-client/playlists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { createPlaylist } from 'spotify-web-api-client/playlists';
 
 (async () => {
   const client = createClient(
@@ -3562,10 +3562,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getCoverImageForPlaylist } from 'spotify-api-client/playlists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getCoverImageForPlaylist } from 'spotify-web-api-client/playlists';
 
 (async () => {
   const client = createClient(
@@ -3602,10 +3602,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getMyPlaylists } from 'spotify-api-client/playlists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getMyPlaylists } from 'spotify-web-api-client/playlists';
 
 (async () => {
   const client = createClient(
@@ -3639,10 +3639,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getPlaylistsForUser } from 'spotify-api-client/playlists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getPlaylistsForUser } from 'spotify-web-api-client/playlists';
 
 (async () => {
   const client = createClient(
@@ -3681,10 +3681,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getPlaylist } from 'spotify-api-client/playlists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getPlaylist } from 'spotify-web-api-client/playlists';
 
 (async () => {
   const client = createClient(
@@ -3725,10 +3725,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { listItemsInPlaylist } from 'spotify-api-client/playlists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { listItemsInPlaylist } from 'spotify-web-api-client/playlists';
 
 (async () => {
   const client = createClient(
@@ -3764,10 +3764,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { removeItemsFromPlaylist } from 'spotify-api-client/playlists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { removeItemsFromPlaylist } from 'spotify-web-api-client/playlists';
 
 (async () => {
   const client = createClient(
@@ -3810,10 +3810,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { reorderItemsInPlaylist } from 'spotify-api-client/playlists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { reorderItemsInPlaylist } from 'spotify-web-api-client/playlists';
 
 (async () => {
   const client = createClient(
@@ -3850,10 +3850,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { replaceItemsInPlaylist } from 'spotify-api-client/playlists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { replaceItemsInPlaylist } from 'spotify-web-api-client/playlists';
 
 (async () => {
   const client = createClient(
@@ -3891,10 +3891,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { uploadCoverImageForPlaylist } from 'spotify-api-client/playlists';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { uploadCoverImageForPlaylist } from 'spotify-web-api-client/playlists';
 
 (async () => {
   const client = createClient(
@@ -3935,10 +3935,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { search } from 'spotify-api-client/search';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { search } from 'spotify-web-api-client/search';
 
 (async () => {
   const client = createClient(
@@ -3976,10 +3976,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { searchAlbums } from 'spotify-api-client/search';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { searchAlbums } from 'spotify-web-api-client/search';
 
 (async () => {
   const client = createClient(
@@ -4018,10 +4018,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { searchArtists } from 'spotify-api-client/search';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { searchArtists } from 'spotify-web-api-client/search';
 
 (async () => {
   const client = createClient(
@@ -4060,10 +4060,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { searchEpisodes } from 'spotify-api-client/search';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { searchEpisodes } from 'spotify-web-api-client/search';
 
 (async () => {
   const client = createClient(
@@ -4102,10 +4102,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { searchPlaylists } from 'spotify-api-client/search';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { searchPlaylists } from 'spotify-web-api-client/search';
 
 (async () => {
   const client = createClient(
@@ -4144,10 +4144,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { searchShows } from 'spotify-api-client/search';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { searchShows } from 'spotify-web-api-client/search';
 
 (async () => {
   const client = createClient(
@@ -4186,10 +4186,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { searchTracks } from 'spotify-api-client/search';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { searchTracks } from 'spotify-web-api-client/search';
 
 (async () => {
   const client = createClient(
@@ -4228,10 +4228,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getEpisodesForShow } from 'spotify-api-client/search';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getEpisodesForShow } from 'spotify-web-api-client/search';
 
 (async () => {
   const client = createClient(
@@ -4266,10 +4266,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getShow } from 'spotify-api-client/shows';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getShow } from 'spotify-web-api-client/shows';
 
 (async () => {
   const client = createClient(
@@ -4305,10 +4305,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getShows } from 'spotify-api-client/shows';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getShows } from 'spotify-web-api-client/shows';
 
 (async () => {
   const client = createClient(
@@ -4352,10 +4352,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getAudioAnalysisForTrack } from 'spotify-api-client/tracks';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getAudioAnalysisForTrack } from 'spotify-web-api-client/tracks';
 
 (async () => {
   const client = createClient(
@@ -4389,10 +4389,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getAudioFeaturesForTrack } from 'spotify-api-client/tracks';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getAudioFeaturesForTrack } from 'spotify-web-api-client/tracks';
 
 (async () => {
   const client = createClient(
@@ -4426,10 +4426,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getAudioFeaturesForTracks } from 'spotify-api-client/tracks';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getAudioFeaturesForTracks } from 'spotify-web-api-client/tracks';
 
 (async () => {
   const client = createClient(
@@ -4474,10 +4474,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getTrack } from 'spotify-api-client/tracks';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getTrack } from 'spotify-web-api-client/tracks';
 
 (async () => {
   const client = createClient(
@@ -4512,10 +4512,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getTracks } from 'spotify-api-client/tracks';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getTracks } from 'spotify-web-api-client/tracks';
 
 (async () => {
   const client = createClient(
@@ -4562,10 +4562,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { me } from 'spotify-api-client/users';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { me } from 'spotify-web-api-client/users';
 
 (async () => {
   const client = createClient(
@@ -4597,10 +4597,10 @@ Read the [Spotify API docs](https://developer.spotify.com/documentation/web-api/
 <summary><strong>Example</strong></summary>
 
 ```js
-import { createClient } from 'spotify-api-client';
-import { fetcher } from 'spotify-api-client/fetcher';
-import { createBearerAuthMiddleware } from 'spotify-api-client/middleware';
-import { getUser } from 'spotify-api-client/users';
+import { createClient } from 'spotify-web-api-client';
+import { fetcher } from 'spotify-web-api-client/fetcher';
+import { createBearerAuthMiddleware } from 'spotify-web-api-client/middleware';
+import { getUser } from 'spotify-web-api-client/users';
 
 (async () => {
   const client = createClient(

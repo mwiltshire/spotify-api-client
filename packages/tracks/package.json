@@ -1,5 +1,5 @@
 {
-  "name": "spotify-api-client/tracks",
+  "name": "spotify-web-api-client/tracks",
   "private": true,
   "main": "../dist/cjs/tracks/index.js",
   "module": "../dist/esm/tracks/index.js"

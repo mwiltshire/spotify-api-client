@@ -1,5 +1,5 @@
 {
-  "name": "spotify-api-client/personalization",
+  "name": "spotify-web-api-client/personalization",
   "private": true,
   "main": "../dist/cjs/personalization/index.js",
   "module": "../dist/esm/personalization/index.js"

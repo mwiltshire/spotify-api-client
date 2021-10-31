@@ -1,5 +1,5 @@
 {
-  "name": "spotify-api-client/albums",
+  "name": "spotify-web-api-client/albums",
   "private": true,
   "main": "../dist/cjs/albums/index.js",
   "module": "../dist/esm/albums/index.js"
