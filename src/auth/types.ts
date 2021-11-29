@@ -1,24 +1,25 @@
 import { Response } from '../types';
 
 export type Scope =
-  | 'ugc-image-upload'
   | 'user-read-playback-state'
   | 'user-modify-playback-state'
   | 'user-read-currently-playing'
-  | 'app-remote-control'
-  | 'user-read-email'
   | 'user-read-private'
-  | 'playlist-read-collaborative'
-  | 'playlist-modify-public'
-  | 'playlist-read-private'
-  | 'playlist-modify-private'
+  | 'user-read-email'
+  | 'user-follow-modify'
+  | 'user-follow-read'
   | 'user-library-modify'
   | 'user-library-read'
-  | 'user-top-read'
+  | 'streaming'
+  | 'app-remote-control'
   | 'user-read-playback-position'
+  | 'user-top-read'
   | 'user-read-recently-played'
-  | 'user-follow-read'
-  | 'user-follow-modify';
+  | 'playlist-modify-private'
+  | 'playlist-read-collaborative'
+  | 'playlist-read-private'
+  | 'playlist-modify-public'
+  | 'ugc-image-upload';
 
 export interface BaseAuthorizationUrlParameters {
   client_id: string;
