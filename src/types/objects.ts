@@ -101,6 +101,11 @@ export interface UserObjectPrivate extends ContextObject {
   id: string;
   /** The user’s profile image. */
   images: ImageObject[];
+  /** The user's Spotify subscription level: "premium", "free", etc.
+   * The subscription level "open" can be considered the same as "free".
+   * This field is only available when the current user has granted access
+   * to the user-read-private scope. */
+  product?: 'premium' | 'free' | 'open';
   type: 'user';
 }
 
