@@ -1,6 +1,0 @@
-{
-  "name": "spotify-web-api-client/user",
-  "private": true,
-  "main": "../dist/cjs/user/index.js",
-  "module": "../dist/esm/user/index.js"
-}

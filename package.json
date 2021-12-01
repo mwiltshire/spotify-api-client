@@ -21,7 +21,7 @@
     "search/",
     "shows/",
     "tracks/",
-    "user/"
+    "users/"
   ],
   "engines": {
     "node": ">=14"
