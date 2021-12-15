@@ -6,7 +6,6 @@ import {
   LocaleOption,
   MarketOption,
   CategoryObject,
-  PagingObject,
   RecommendationsObject,
   CategoryIdObject,
   PagingSimplifiedPlaylistsObject,
@@ -116,7 +115,7 @@ export interface GetRecommendationsParameters
 }
 
 export type GetRecommendationsResponse = Promise<
-  Response<PagingObject<RecommendationsObject>>
+  Response<RecommendationsObject>
 >;
 
 export type GetRecommendationGenresResponse = Promise<Response<GenresObject>>;
